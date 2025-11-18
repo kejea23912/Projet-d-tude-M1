@@ -1,0 +1,102 @@
+
+
+
+```{r}
+library(tidyverse)
+library(lubridate)
+library(scales)
+library(tidymodels)
+library(randomForest)
+library(broom)
+library(stringr)
+library(readr)  
+library(readxl) 
+library(dplyr)    
+library(fuzzyjoin)
+
+```
+
+```{r}
+
+dpe03existant <- read_delim("dpe03existant.csv", 
+    delim = ",", escape_double = FALSE, trim_ws = TRUE)
+View(dpe03existant)
+```
+
+```{r}
+consoadresse <- read_delim("consoadresse.csv", 
+    delim = ";", escape_double = FALSE, trim_ws = TRUE)
+View(consoadresse)
+```
+
+```{r}
+consoadresse <- consoadresse[, -c(2,3,5,15,16,19)]
+```
+
+```{r}
+consoadresse <- consoadresse |> mutate(adresse_ban = paste(`Numéro de voie`, `Type de voie`, `Libellé de voie`, `Code Commune`, `Nom Commune`))
+```
+
+```{r}
+consoadresse <- consoadresse[, -c(2,3,4,5,6,7)]
+```
+
+```{r}
+dpe03existant$adresse_ban <- toupper(dpe03existant$adresse_ban)
+```
+
+```{r}
+dpe03existant$date_reception_dpe<- as.Date(dpe03existant$date_reception_dpe)
+dpe03existant$annee <- format(dpe03existant$date_reception_dpe, "%Y")
+```
+
+```{r}
+dpe03existant$adresse_ban <- toupper(dpe03existant$adresse_ban)
+dpe03existant$adresse_ban <- str_replace_all(dpe03existant$adresse_ban, "[[:punct:]]", " ")
+dpe03existant$adresse_ban <- str_squish(dpe03existant$adresse_ban)
+```
+
+```{r}
+consoadresse$adresse_ban <- toupper(consoadresse$adresse_ban)
+consoadresse$adresse_ban <- str_replace_all(consoadresse$adresse_ban, "[[:punct:]]", " ")
+consoadresse$adresse_ban <- str_squish(consoadresse$adresse_ban)
+```
+
+```{r}
+consoadresse2024 <- consoadresse |> filter(Année == "2024")
+```
+
+```{r}
+dpe03uni <- dpe03existant %>% distinct(adresse_ban, .keep_all = TRUE)
+```
+
+```{r}
+dpe2024 <- dpe03uni |>filter(annee == "2024")
+```
+
+```{r}
+consoadresse2024$adresse <- sub("([0-9]{3})[0-9]{2}(\\s+[A-Z])", "\\1\\2", consoadresse2024$adresse_ban)
+
+dpe2024$adresse <- sub("([0-9]{3})[0-9]{2}(\\s+[A-Z])", "\\1\\2", dpe2024$adresse_ban)
+```
+
+
+```{r}
+df_final1 <- inner_join(consoadresse2024, dpe2024, 
+                       by = "adresse")
+```
+
+```{r}
+basse_final = df_final1[, -c(2,6,7,8,11,15,21)]
+```
+
+
+```{r}
+write.csv(basse_final, "basse_final.csv", row.names = FALSE)
+```
+
+
+
+
+
+
