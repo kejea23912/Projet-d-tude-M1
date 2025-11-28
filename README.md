@@ -1,11 +1,11 @@
-# 📊 Projet M1 : Analyse des Données Immobilières (DPE)
+# Projet M1 : Diagnostics de Performance Électrique (DPE)
 
 ![Statut](https://img.shields.io/badge/Statut-En%20Cours-yellow)
 ![Contexte](https://img.shields.io/badge/Cadre-Master%201-blue)
 ![Outils](https://img.shields.io/badge/R-RStudio-green)
 
  **Note académique :** Ce dépôt regroupe les travaux pratiques et le code source de notre projet universitaire de Master 1.
- ## 🎯 Objectif du projet
+ ## Objectif du projet
 L'objectif est d'appliquer différentes méthodes d'analyse de données sur notre base :
 * **ACP** (Analyse en Composantes Principales)
 * **AFC** (Analyse Factorielle des Correspondances)
