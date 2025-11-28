@@ -37,20 +37,109 @@ plot(pressure, main = "Courbe de pression")
 
 ::::
 
+
+
+
+# Importation des librairies 
+```{r}
+library(tidyverse)
+library(FactoMineR)
+library(factoextra)
+```
+
+
+
+# Importaion de la base de données 
+```{r}
+df<-read.csv("basse_final.csv",sep = ",", dec = ".",header = TRUE)[,-1]
+head(df)
+```
+
+
+
+
 # ACP
 
 ## inertie 
+```{r}
+nrow(df)
+length(unique(df$adresse))
+length(unique(df$etiquette_dpe))
+length(unique(df$numero_dpe))
+```
 
 # AFC 
 
-## relation....
-blannn
+
+
 
 
 # ACM 
 
-## blabla 
+```{r}
+df2 <-df %>% 
+  rename(Conso_totale = Consommation.annuelle.totale.de.l.adresse..MWh., Conso_Moy_log = Consommation.annuelle.moyenne.par.logement.de.l.adresse..MWh.,Conso_com = Consommation.annuelle.moyenne.de.la.commune..MWh. ) %>% 
+  select(-adresse, -numero_dpe)
 
-# clasification
+str(df2)
+```
+## Conversion des variables qualitatives en factor et decoupage en classe
+```{r}
+qualitative_cols<-c("etiquette_dpe","etiquette_ges")
+df2[qualitative_cols]<-lapply(df2[qualitative_cols], as.factor)
+quantitative_cols<-c("Conso_totale","Conso_Moy_log","Conso_com","annee_construction","surface_habitable_logement","conso_5.usages_ef","emission_ges_5_usages","cout_total_5_usages","nombre_appartement")
+df2[quantitative_cols] <- lapply(df2[quantitative_cols], function(x) {
+  cut(x,
+      breaks = unique(quantile(x, probs = seq(0, 1, 0.25), na.rm = TRUE)),
+      include.lowest = TRUE
+  )
+})
+str(df2)
+
+```
+```{r}
+quali.sup = c(4,5)
+```
+
+## Mise en Oeuvre de l'ACM
+
+```{r}
+ACM<-MCA(df2, quali.sup = quali.sup, graph = F, ncp = Inf)
+```
+### Inertie
+```{r}
+ACM$eig
+```
+
+### Graphique des Inerties 
+```{r}
+fviz_eig(ACM)
+```
+
+
+
+#
+
+
+
+
+
+
+
+
+# Mise en Oeuvre de la clasification non supervisée à partir de l'ACM
+On commence par faire par faire une classification hierarchique ascendante sur la sortie de l'ACM avec consolidation puis faire la méthodes **k-means** 
+```{r}
+ACM_HCPC<-HCPC(ACM, graph = F, consol = F, cex = 0.3)
+```
+
+```{r}
+fviz_dend(ACM_HCPC, main = "cluster with Ward method")
+```
+
+
+
+
+
 
 ## reste 
