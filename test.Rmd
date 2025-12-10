@@ -1,0 +1,26 @@
+---
+title: "test"
+author: "kenny"
+date: "2025-12-10"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Importation des librairies 
+```{r}
+library(tidyverse)
+library(FactoMineR)
+library(factoextra)
+```
+
+```{r}
+df<-read.csv("basse_final.csv",sep = ",", dec = ".",header = TRUE)[,-1]
+head(df)
+```
+
+```{r}
+
+```
+
