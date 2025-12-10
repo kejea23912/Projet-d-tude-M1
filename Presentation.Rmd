@@ -16,16 +16,15 @@ output:
   slidy_presentation:
     highlight: tango
 ---
-# Importation des librairies 
-```{r, include=FALSE}
+
+```{Importation des librairies , include=FALSE}
 library(tidyverse)
 library(FactoMineR)
 library(factoextra)
 ```
 
 
-# Importaion de la base de données 
-```{r}
+```{Importaion de la base de données , include=FALSE}
 df<-read.csv("basse_final.csv",sep = ",", dec = ".",header = TRUE)[,-1]
 head(df)
 ```
