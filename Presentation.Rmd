@@ -1,17 +1,37 @@
 ---
 title: "exemple de presentation"
 author:
-- Kenny Jean-elie
+- "Kenny Jean-elie"
 - Ibrahima Caba Bah
 - Fatou Diop Ndeye
 date: "`r Sys.Date()`"
 output:
   beamer_presentation:
     slide_level: 2
-    theme: "Madrid"
-    colortheme: "dolphin"
-    highlight: "tango"
+    theme: Madrid
+    colortheme: dolphin
+    highlight: tango
+  ioslides_presentation:
+    highlight: tango
+  slidy_presentation:
+    highlight: tango
 ---
+# Importation des librairies 
+```{r, include=FALSE}
+library(tidyverse)
+library(FactoMineR)
+library(factoextra)
+```
+
+
+# Importaion de la base de données 
+```{r}
+df<-read.csv("basse_final.csv",sep = ",", dec = ".",header = TRUE)[,-1]
+head(df)
+```
+
+
+
 
 # Introduction
 
@@ -37,23 +57,6 @@ plot(pressure, main = "Courbe de pression")
 
 ::::
 
-
-
-
-# Importation des librairies 
-```{r}
-library(tidyverse)
-library(FactoMineR)
-library(factoextra)
-```
-
-
-
-# Importaion de la base de données 
-```{r}
-df<-read.csv("basse_final.csv",sep = ",", dec = ".",header = TRUE)[,-1]
-head(df)
-```
 
 
 
@@ -134,11 +137,8 @@ ACM_HCPC<-HCPC(ACM, graph = F, consol = F, cex = 0.3)
 ```
 
 ```{r}
-fviz_dend(ACM_HCPC, main = "cluster with Ward method")
+#fviz_dend(ACM_HCPC, main = "cluster with Ward method")
 ```
-
-
-
 
 
 
