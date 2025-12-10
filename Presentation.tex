@@ -1,0 +1,331 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+  ignorenonframetext,
+]{beamer}
+\newif\ifbibliography
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% remove section numbering
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{section title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{subsection title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\usetheme[]{Madrid}
+\usecolortheme[]{dolphin}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={exemple de presentation},
+  pdfauthor={Kenny Jean-elie; Ibrahima Caba Bah; Fatou Diop Ndeye},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{exemple de presentation}
+\author{Kenny Jean-elie \and Ibrahima Caba Bah \and Fatou Diop Ndeye}
+\date{2025-11-22}
+
+\begin{document}
+\frame{\titlepage}
+
+\section{Introduction}\label{introduction}
+
+\begin{frame}{Introduction}
+Bienvenue dans cette mini présentation Beamer avec R Markdown.
+\end{frame}
+
+\begin{frame}{Objectif}
+\phantomsection\label{objectif}
+\begin{itemize}
+\tightlist
+\item
+  Montrer une slide avec deux colonnes
+\item
+  Combiner un graphique et un commentaire
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Slide avec deux colonnes}
+\phantomsection\label{slide-avec-deux-colonnes}
+\begin{columns}[T]
+\begin{column}{0.5\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{Presentation_files/figure-beamer/unnamed-chunk-1-1.pdf}}
+\end{column}
+
+\begin{column}{0.5\linewidth}
+``Cette diapositive utilise deux colonnes. À gauche, nous avons un
+graphique représentant la relation entre la température et la pression.
+À droite, nous avons ce commentaire explicatif.''
+\end{column}
+\end{columns}
+\end{frame}
+
+\section{Importation des librairies}\label{importation-des-librairies}
+
+\begin{frame}[fragile]{Importation des librairies}
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## -- Attaching core tidyverse packages ------------------------ tidyverse 2.0.0 --
+## v dplyr     1.1.4     v readr     2.1.6
+## v forcats   1.0.1     v stringr   1.6.0
+## v ggplot2   4.0.1     v tibble    3.3.0
+## v lubridate 1.9.4     v tidyr     1.3.1
+## v purrr     1.2.0     
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+## i Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+\end{verbatim}
+\end{frame}
+
+\section{Importaion de la base de
+données}\label{importaion-de-la-base-de-donnuxe9es}
+
+\begin{frame}[fragile]{Importaion de la base de données}
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df}\OtherTok{\textless{}{-}}\FunctionTok{read.csv}\NormalTok{(}\StringTok{"basse\_final.csv"}\NormalTok{,}\AttributeTok{sep =} \StringTok{","}\NormalTok{, }\AttributeTok{dec =} \StringTok{"."}\NormalTok{,}\AttributeTok{header =} \ConstantTok{TRUE}\NormalTok{)[,}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{]}
+\FunctionTok{head}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Consommation.annuelle.totale.de.l.adresse..MWh.
+## 1                                          25.316
+## 2                                          17.846
+## 3                                         138.250
+## 4                                         221.062
+## 5                                         364.091
+## 6                                          56.757
+##   Consommation.annuelle.moyenne.par.logement.de.l.adresse..MWh.
+## 1                                                         1.808
+## 2                                                         1.622
+## 3                                                         2.194
+## 4                                                         3.509
+## 5                                                         1.291
+## 6                                                         2.838
+##   Consommation.annuelle.moyenne.de.la.commune..MWh.
+## 1                                             6.317
+## 2                                             6.317
+## 3                                             2.631
+## 4                                             2.631
+## 5                                             2.631
+## 6                                             2.631
+##                                 adresse    numero_dpe etiquette_dpe
+## 1 175 RUE DE LA PLAINE 383 RUY MONTCEAU 2438E4219851O             C
+## 2 159 RUE DE LA PLAINE 383 RUY MONTCEAU 2438E4219636H             C
+## 3     17 SQUARE SAINT CHARLES 750 PARIS 2475E1185567T             F
+## 4          7 RUE SAINT CLAUDE 750 PARIS 2475E2805868A             E
+## 5        39 RUE SAINT FARGEAU 750 PARIS 2475E2267676I             D
+## 6      48 RUE SAINT FERDINAND 750 PARIS 2375E4566733O             D
+##   etiquette_ges annee_construction surface_habitable_logement conso_5.usages_ef
+## 1             C               2021                       49.1            3405.2
+## 2             C               2021                       81.8            6671.5
+## 3             B               1980                       32.0            4944.4
+## 4             B               1945                       30.2            4094.2
+## 5             D               1974                       27.1            5144.8
+## 6             B               1945                       22.7            2283.1
+##   emission_ges_5_usages cout_total_5_usages nombre_appartement
+## 1                 713.1                 429                 11
+## 2                1431.4                 782                 11
+## 3                 360.0                 892                 65
+## 4                 301.9                 934                 71
+## 5                 915.1                 494                278
+## 6                 159.0                 591                 12
+\end{verbatim}
+\end{frame}
+
+\section{ACP}\label{acp}
+
+\begin{frame}{inertie}
+\phantomsection\label{inertie}
+\end{frame}
+
+\section{AFC}\label{afc}
+
+\begin{frame}{relation\ldots.}
+\phantomsection\label{relation.}
+blannn
+\end{frame}
+
+\section{ACM}\label{acm}
+
+\begin{frame}[fragile]{ACM}
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{str}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 'data.frame':    7935 obs. of  13 variables:
+##  $ Consommation.annuelle.totale.de.l.adresse..MWh.              : num  25.3 17.8 138.2 221.1 364.1 ...
+##  $ Consommation.annuelle.moyenne.par.logement.de.l.adresse..MWh.: num  1.81 1.62 2.19 3.51 1.29 ...
+##  $ Consommation.annuelle.moyenne.de.la.commune..MWh.            : num  6.32 6.32 2.63 2.63 2.63 ...
+##  $ adresse                                                      : chr  "175 RUE DE LA PLAINE 383 RUY MONTCEAU" "159 RUE DE LA PLAINE 383 RUY MONTCEAU" "17 SQUARE SAINT CHARLES 750 PARIS" "7 RUE SAINT CLAUDE 750 PARIS" ...
+##  $ numero_dpe                                                   : chr  "2438E4219851O" "2438E4219636H" "2475E1185567T" "2475E2805868A" ...
+##  $ etiquette_dpe                                                : chr  "C" "C" "F" "E" ...
+##  $ etiquette_ges                                                : chr  "C" "C" "B" "B" ...
+##  $ annee_construction                                           : int  2021 2021 1980 1945 1974 1945 1910 1967 1947 1973 ...
+##  $ surface_habitable_logement                                   : num  49.1 81.8 32 30.2 27.1 22.7 142 50 83.3 75.1 ...
+##  $ conso_5.usages_ef                                            : num  3405 6672 4944 4094 5145 ...
+##  $ emission_ges_5_usages                                        : num  713 1431 360 302 915 ...
+##  $ cout_total_5_usages                                          : num  429 782 892 934 494 ...
+##  $ nombre_appartement                                           : int  11 11 65 71 278 12 33 21 12 83 ...
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Conversion des variables qualitatives en factor}
+\phantomsection\label{conversion-des-variables-qualitatives-en-factor}
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{qualitative\_cols}\OtherTok{\textless{}{-}}\FunctionTok{c}\NormalTok{(}\StringTok{"adresse"}\NormalTok{,}\StringTok{"numero\_dpe"}\NormalTok{,}\StringTok{"etiquette\_dpe"}\NormalTok{,}\StringTok{"etiquette\_ges"}\NormalTok{)}
+\NormalTok{df[qualitative\_cols]}\OtherTok{\textless{}{-}}\FunctionTok{lapply}\NormalTok{(df[qualitative\_cols], as.factor)}
+\end{Highlighting}
+\end{Shaded}
+\end{frame}
+
+\begin{frame}{}
+\phantomsection\label{section}
+\end{frame}
+
+\section{}\label{section-1}
+
+\begin{frame}{blabla}
+\phantomsection\label{blabla}
+\end{frame}
+
+\section{clasification}\label{clasification}
+
+\begin{frame}{reste}
+\phantomsection\label{reste}
+\end{frame}
+
+\end{document}
