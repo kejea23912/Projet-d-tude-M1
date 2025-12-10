@@ -17,18 +17,25 @@ output:
     highlight: tango
 ---
 
-```{Importation des librairies , include=FALSE}
+```{r, Importation des librairies , include=FALSE}
 library(tidyverse)
 library(FactoMineR)
 library(factoextra)
+library(Factoshiny)
 ```
 
 
-```{Importaion de la base de données , include=FALSE}
-df<-read.csv("basse_final.csv",sep = ",", dec = ".",header = TRUE)[,-1]
+```{r, Importaion de la base de données , include=FALSE}
+dfbefore<-read.csv("basse_final.csv",sep = ",", dec = ".",header = TRUE)[,-1]
 head(df)
 ```
 
+```{r, traitement de la basse de donnée, include=FALSE}
+#dans ce chunk on élimine les ligne qui posedent au moins un NA dans ces variables
+sum(is.na(dfbefore))
+df <- na.omit(dfbefore)
+
+```
 
 
 
@@ -70,7 +77,53 @@ length(unique(df$etiquette_dpe))
 length(unique(df$numero_dpe))
 ```
 
-# AFC 
+# Analyse des Correspondances Factorielles
+```{r, echo= FALSE}
+res.CA<-CA(df[,-c(4,5)],quali.sup=c(4,5),quanti.sup=c(1,3,6,11),graph=FALSE)
+
+fviz_ca(res.CA,
+        col.quali.sup = "#FF00FF",
+        repel = TRUE,
+        label = c("var","quali")) +
+  theme_minimal() +                # thème épuré
+  theme(plot.title = element_text(size=16, face="bold", color="darkblue", a=0.1),
+        axis.title = element_text(size=14, face="italic"),
+        legend.position = "bottom")
+
+
+```
+
+
+
+
+
+## Présentation générale de l'ACF
+
+
+
+##  Description des variables
+
+### Variables actives: 
+Étiquette_dpe, Étiquette_ges, Année_construction, Nombre_appartement
+
+
+### Variables quantitatives supplémentaires:
+Consommation.annuelle...., Surface_habitable, Émission_ges_5_usages, Coût_total_5_usages
+
+### variable exclue:
+Adresse, Numero_dpe, Conso_5_usages_ef, Consommation.annuelle.moyenne....
+
+
+## Qualité globale de l'ACF
+
+## interprétation de l'axe 1 
+
+## interprétation de l'axe 2
+
+## Analyse des individus
+
+## synthèse finale
+
 
 
 
