@@ -147,8 +147,7 @@ fig1 <- fviz_contrib(res.CA, choice = "row", axes = 1) +
 
 fig2 <- fviz_contrib(res.CA, choice = "col", axes = 1) +
   ggtitle("Contribution des GES à la Dim1") +
-  theme_minimal() +
-  theme(axis.title.x = element_text(text = "étiquette GES"))
+  theme_minimal() 
 
 
 ggarrange(fig1, fig2, ncol = 2)
@@ -158,7 +157,20 @@ ggarrange(fig1, fig2, ncol = 2)
 
 ## interprétation de l'axe 2
 
-## Analyse des individus
+```{r}
+fig1 <- fviz_contrib(res.CA, choice = "row", axes = 2) +
+  ggtitle("Contribution des DPE à la Dime 2") +
+  theme_minimal()
+
+fig2 <- fviz_contrib(res.CA, choice = "col", axes = 2) +
+  ggtitle("Contribution des GES à la Dim2") +
+  theme_minimal() 
+
+
+ggarrange(fig1, fig2, ncol = 2)
+
+```
+
 
 ## synthèse finale
 
