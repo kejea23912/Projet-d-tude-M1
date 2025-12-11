@@ -133,6 +133,12 @@ L'Axe 1 et 2 cumulent `r round;(res.CA$eig[2,3])` % de l'inertie total
 
 ::::
 
+## Qualité de lACF
+
+```{r}
+res.CA$eig |> kable(digits = c(2,1,1))
+```
+
 ## interprétation de l'axe 1 
 
 ```{r}
@@ -165,6 +171,21 @@ ggarrange(fig1, fig2, ncol = 2)
 
 ```
 
+## interprétation de l'axe 3
+
+```{r}
+fig1 <- fviz_contrib(res.CA, choice = "row", axes = 3, fill= "red") +
+  ggtitle("Contribution des DPE à la Dime 3") +
+  theme_minimal()
+
+fig2 <- fviz_contrib(res.CA, choice = "col", axes = 3, fill= "blue") +
+  ggtitle("Contribution des GES à la Dim3") +
+  theme_minimal() 
+
+
+ggarrange(fig1, fig2, ncol = 2)
+
+```
 
 ## synthèse finale
 ```{r}
