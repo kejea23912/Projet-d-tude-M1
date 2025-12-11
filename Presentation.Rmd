@@ -92,11 +92,6 @@ length(unique(df$numero_dpe))
 Tab <- table(df$etiquette_dpe, df$etiquette_ges)
 res.CA <- CA(Tab, graph= FALSE)
 
-fviz_ca(res.CA, repel = TRUE ) +
-  theme_minimal() +
-  theme()
-
-
 ```
 
 
@@ -132,7 +127,7 @@ fviz_screeplot(res.CA, addlabels =TRUE, barfill = "blue")
 
 ::: {.column width="50%"}
 
-L'Axe 1 et 2 cumulent `r round;(res.CA$eig[2,3],1)` % de l'inertie total
+L'Axe 1 et 2 cumulent `r round;(res.CA$eig[2,3])` % de l'inertie total
 
 :::
 
@@ -141,11 +136,10 @@ L'Axe 1 et 2 cumulent `r round;(res.CA$eig[2,3],1)` % de l'inertie total
 ## interprétation de l'axe 1 
 
 ```{r}
-fig1 <- fviz_contrib(res.CA, choice = "row", axes = 1) +
-  ggtitle("Contribution des DPE à la Dime 1") +
-  theme_minimal()
+fig1 <- fviz_contrib(res.CA, choice = "row", axes = 1, fill = "red") +
+  ggtitle("Contribution des DPE à la Dime 1") 
 
-fig2 <- fviz_contrib(res.CA, choice = "col", axes = 1) +
+fig2 <- fviz_contrib(res.CA, choice = "col", axes = 1, fill = "blue") +
   ggtitle("Contribution des GES à la Dim1") +
   theme_minimal() 
 
@@ -158,11 +152,11 @@ ggarrange(fig1, fig2, ncol = 2)
 ## interprétation de l'axe 2
 
 ```{r}
-fig1 <- fviz_contrib(res.CA, choice = "row", axes = 2) +
+fig1 <- fviz_contrib(res.CA, choice = "row", axes = 2, fill= "red") +
   ggtitle("Contribution des DPE à la Dime 2") +
   theme_minimal()
 
-fig2 <- fviz_contrib(res.CA, choice = "col", axes = 2) +
+fig2 <- fviz_contrib(res.CA, choice = "col", axes = 2, fill= "blue") +
   ggtitle("Contribution des GES à la Dim2") +
   theme_minimal() 
 
@@ -173,6 +167,11 @@ ggarrange(fig1, fig2, ncol = 2)
 
 
 ## synthèse finale
+```{r}
+fviz_ca(res.CA, repel = TRUE ) +
+  theme_minimal() +
+  theme()
+```
 
 
 
