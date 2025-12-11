@@ -2,18 +2,18 @@
 title: "exemple de presentation"
 author:
 - "Kenny Jean-elie"
-- Ibrahima Caba Bah
-- Fatou Diop Ndeye
+- "Ibrahima Caba Bah"
+- "Fatou Diop Ndeye"
 date: "`r Sys.Date()`"
 output:
-  ioslides_presentation:
-    highlight: tango
-  slidy_presentation:
-    highlight: tango
   beamer_presentation:
     slide_level: 2
     theme: Madrid
     colortheme: dolphin
+    highlight: tango
+  slidy_presentation:
+    highlight: tango
+  ioslides_presentation:
     highlight: tango
 ---
 
@@ -24,24 +24,51 @@ knitr::opts_chunk$set(echo = FALSE,
 ```
 
 ```{r, Importation des librairies , include=FALSE}
-library(tidyverse)
+library(tinytex)
+library(FactoMineR)
+library(knitr)
+library(kableExtra)
+library(tidyverse) 
+library(corrplot)
 library(FactoMineR)
 library(factoextra)
-library(Factoshiny)
-library(kableExtra)
+library(DT)
+library(ggpubr)
+library(missMDA)
+library(patchwork)
+```
 
+
+```{r, include=FALSE}
+col_ind <- "#008EA0FF" #"#357EBDFF"
+col_var <- "#C71000FF"#D43F3AFF"
+col_bar <- "#8A419888"#5CB85CFF"
+logodark <- "#5A9599EE"
+corail <- "#FF6348FF"
+orange <- "#FF6F00FF"
+accent <- "#00817c"
+alert <- "#e64173"
+violet <- "#8A4198FF"
+pal_js <- c(col_ind, "deeppink1", "seagreen2", orange, violet,  col_var)
 ```
 
 
 ```{r, Importaion de la base de données , include=FALSE}
 dfbefore<-read.csv("basse_final.csv",sep = ",", dec = ".",header = TRUE)[,-1]
-head(df)
+DPE<-read.csv("basse_final.csv",header=TRUE,sep=",")[-1]
+sum(is.na(dfbefore))
+df <- na.omit(dfbefore)
+df3 <- df
 ```
 
 ```{r, traitement de la basse de donnée, include=FALSE}
-#dans ce chunk on élimine les ligne qui posedent au moins un NA dans ces variables
-sum(is.na(dfbefore))
-df <- na.omit(dfbefore)
+colnames(df)[1] <- "C.totale"
+colnames(df)[2] <- "C.moyenne/adr"
+colnames(df)[3] <- "C.moyenne/com"
+colnames(DPE)[1] <- "C.totale"
+colnames(DPE)[2] <- "C.moyenne/adr"
+colnames(DPE)[3] <- "C.moyenne/com"
+
 
 ```
 
@@ -49,43 +76,94 @@ df <- na.omit(dfbefore)
 
 
 
-# Introduction
-
-Bienvenue dans cette mini présentation Beamer avec R Markdown.
-
-## Objectif
-
-- Montrer une slide avec deux colonnes
-- Combiner un graphique et un commentaire
-
-## Slide avec deux colonnes
-
-:::: columns
-::: {.column width="50%"}
-```{r, echo=FALSE}
-plot(pressure, main = "Courbe de pression")
-``` 
-::: 
-
-::: {.column width="50%"}
-"Cette diapositive utilise deux colonnes. À gauche, nous avons un graphique représentant la relation entre la température et la pression. À droite, nous avons ce commentaire explicatif."
-:::
-
-::::
 
 
+# Analyse en composantes principales
 
 
+```{r, include= FALSE}
+resacp <- PCA(DPE, graph = T, quali.sup = 4:7)
+resacp
+```
 
-# ACP
+## Matrice de corrélation
 
-## inertie 
+```{r, dev="png", dpi=100, fig.width=7, fig.height=7}
+DPE_num <- DPE[, sapply(DPE, is.numeric)] 
+TabCor <- cor(DPE_num, use = "pairwise.complete.obs")
+corrplot(TabCor,
+         type = "upper",
+         diag = FALSE,
+         method = "circle",
+         tl.col = "black",
+         tl.srt = 45,
+         tl.pos = "lt",
+         addCoef.col = "black",
+         number.cex = 0.7,
+         tl.cex = 0.8)
+```
+
+## Etude des inerties
+
 ```{r}
-nrow(df)
-length(unique(df$adresse))
-length(unique(df$etiquette_dpe))
-length(unique(df$numero_dpe))
+resacp$eig |>  kable(digits = c(2,1,1))
 ```
+
+*Représentation graphique*
+
+```{r, echo=FALSE, dev="png", dpi=100}
+fviz_eig(resacp, addlabels = TRUE,
+         ylim = c(0,70),
+         ylab = "Part de variables expliquée ",
+         title= "Représentation des inerties",)
+```
+
+## Observation des variables
+
+```{r, echo=FALSE, dev="png", dpi=100}
+CoordVar<-round(resacp$var$coord[,1:3],3)
+CoordVar |> kable()
+```
+
+## Qualité de représentation des variables sur l'axe F1F2
+
+```{r, echo=FALSE, dev="png", dpi=100}
+QualF1F2<-resacp$var$cos2[,1]+resacp$var$cos2[,2]
+QualF1F2_rounded<-round(QualF1F2,3)
+QualF1F2_rounded |> kable()
+```
+
+## Tableau des coordonnées des variables
+
+```{r, echo=FALSE, dev="png", dpi=100}
+Tab<-cbind(CoordVar)
+colnames(Tab)<-c("F1","F2","F3")
+Tab |> kable(digits = c(2,1,1))
+```
+
+## Etude des contributions des variables
+
+```{r, echo=FALSE, dev="png", dpi=100}
+fig1 <- fviz_contrib(resacp,choice="var",axes=1) + ggtitle("Contributions des variables Axes 1")
+fig2 <- fviz_contrib(resacp,choice="var",axes=2) + ggtitle("Contributions des variables Axes 2")
+fig3 <- fviz_contrib(resacp,choice="var",axes=3) + ggtitle("Contributions des variables Axes 3")
+ggarrange(fig1, fig2 ,fig3, ncol = 2)
+```
+
+## Représentation des variables avec la qualité de représentation
+
+```{r, echo=FALSE, dev="png", dpi=100}
+library(factoextra)
+
+fviz_pca_var(resacp,
+             col.var = "cos2",                  
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), 
+             repel = TRUE,                    
+             labelsize = 3,                   
+             ggtheme = theme_minimal()        
+)
+```
+
 
 # Analyse des Correspondances Factorielles
 ```{r, echo= FALSE}
@@ -118,20 +196,11 @@ pour quoi?
 
 ## Qualité globale de l'ACF
 
-:::: columns
-::: {.column width="50%"}
 ```{r, echo=FALSE}
 fviz_screeplot(res.CA, addlabels =TRUE, barfill = "blue")
 ``` 
-::: 
-
-::: {.column width="50%"}
-
 L'Axe 1 et 2 cumulent `r round;(res.CA$eig[2,3])` % de l'inertie total
 
-:::
-
-::::
 
 ## Qualité de lACF
 
@@ -187,28 +256,48 @@ ggarrange(fig1, fig2, ncol = 2)
 
 ```
 
+
+## interprétation de l'axe 4
+
+```{r}
+fig1 <- fviz_contrib(res.CA, choice = "row", axes = 4, fill= "red") +
+  ggtitle("Contribution des DPE à la Dime 3") +
+  theme_minimal()
+
+fig2 <- fviz_contrib(res.CA, choice = "col", axes = 4, fill= "blue") +
+  ggtitle("Contribution des GES à la Dim3") +
+  theme_minimal() 
+
+
+ggarrange(fig1, fig2, ncol = 2)
+
+```
+
+
 ## synthèse finale
 ```{r}
 fviz_ca(res.CA, repel = TRUE ) +
   theme_minimal() +
   theme()
 ```
-
-
-
-
-
-
-# ACM 
-
+## synthèse finale 
 ```{r}
-df2 <-df %>% 
+fviz_ca(res.CA, axes = c(2,3), repel = TRUE) +
+  theme_minimal()
+
+```
+
+
+
+# Analyse des correspondances multiples
+
+```{r include=FALSE}
+df2 <-df3 %>% 
   rename(Conso_totale = Consommation.annuelle.totale.de.l.adresse..MWh., Conso_Moy_log = Consommation.annuelle.moyenne.par.logement.de.l.adresse..MWh.,Conso_com = Consommation.annuelle.moyenne.de.la.commune..MWh. ) %>% 
   select(-adresse, -numero_dpe)
 
-str(df2)
 ```
-## Conversion des variables qualitatives en factor et decoupage en classe
+
 ```{r}
 qualitative_cols<-c("etiquette_dpe","etiquette_ges")
 df2[qualitative_cols]<-lapply(df2[qualitative_cols], as.factor)
@@ -219,49 +308,263 @@ df2[quantitative_cols] <- lapply(df2[quantitative_cols], function(x) {
       include.lowest = TRUE
   )
 })
-str(df2)
 
-```
-```{r}
 quali.sup = c(4,5)
 ```
 
-## Mise en Oeuvre de l'ACM
-
 ```{r}
-ACM<-MCA(df2, quali.sup = quali.sup, graph = F, ncp = Inf)
-```
-### Inertie
-```{r}
-ACM$eig
+# Mise en Oeuvre de l'ACM
+resMCA<-MCA(df2, quali.sup = quali.sup, graph = F, ncp = Inf)
 ```
 
-### Graphique des Inerties 
+## Inertie
 ```{r}
-fviz_eig(ACM)
+resMCA$eig |> kable(2,1,1)
+```
+## Inertie 
+```{r}
+fviz_eig(resMCA)
+```
+
+## Contribution des variables
+```{r}
+fig1 <- fviz_contrib(resMCA, choice="var", axes = 1, ggtheme = theme_classic()) +
+  theme(axis.text.x = element_text(size=1), title = element_text(size=9))
+fig2 <- fviz_contrib(resMCA, choice="var", axes = 2, ggtheme = theme_classic()) +
+    theme(axis.text.x = element_text(size=1), title = element_text(size=9))
+fig3 <- fviz_contrib(resMCA, choice="var", axes = 3, ggtheme = theme_classic()) +
+    theme(axis.text.x = element_text(size=1), title = element_text(size=9))
+
+ggarrange(fig1, fig2, fig3, ncol = 3)
 ```
 
 
 
-#
+## corrélation des var
 
+```{r}
+eta <- (get_mca_var(resMCA, element="mca.cor")$coord)[,1:5] |> as.data.frame() 
+names(eta) <- c("dim1", "dim2", "dim3", "dim4", "dim5")
 
+round(eta[order(eta[,1], decreasing = TRUE),1:5], 2) |> 
+  kable()
+```
 
+## visualisation des corrélation
 
+```{r}
+eta_12 <- ggplot(eta) + 
+  aes(x = dim1, y = dim2, label = rownames(eta)) + 
+  geom_point() + 
+  geom_text(vjust = -0.5, hjust = 0.5, size = 3) +  # Ajout des labels
+  theme_minimal() +
+  lims(x = c(0,1), y = c(0,1)) +
+  labs(title = "Variables - MCA", x = "Dim1 (11.4%)", y = "Dim2 (8.8)")
 
+eta_12 
+```
+## visuaisation de la corrélation 
+
+```{r}
+eta_34 <- ggplot(eta) + 
+  aes(x = dim3, y = dim4, label = rownames(eta)) + 
+  geom_point() + 
+  geom_text(vjust = -0.5, hjust = 0.5, size = 3) +  # Ajout des labels
+  theme_minimal() +
+  lims(x = c(0,1), y = c(0,1)) +
+  labs(title = "Variables - MCA", x = "Dim3 (6.5%)", y = "Dim4 (5.9%)")
+
+eta_34 
+```
+
+## Nuages des points 
+
+```{r}
+fviz_mca(resMCA, 
+         geom.ind = "point",
+         geom.var = "point",
+         label = "var",
+         repel = TRUE,
+         ggtheme = theme_minimal())
+```
 
 
 
 # Mise en Oeuvre de la clasification non supervisée à partir de l'ACM
 On commence par faire par faire une classification hierarchique ascendante sur la sortie de l'ACM avec consolidation puis faire la méthodes **k-means** 
 ```{r}
-ACM_HCPC<-HCPC(ACM, graph = F, consol = F, cex = 0.3)
+res.HCPC<-HCPC(resMCA,nb.clust=4,consol=FALSE,graph=FALSE)
+plot.HCPC(res.HCPC,choice='tree',title='Arbre hiérarc hique')
+plot.HCPC(res.HCPC,choice='map',draw.tree=FALSE,title='Plan factoriel')
+
+```
+
+
+
+```{r}
+fviz_nbclust(resMCA$ind$coord, hcut, method = "silhouette",
+                  barfill = col_ind,
+                  barcolor = col_ind,
+                  linecolor = col_ind,
+                  maxSE = list("Tibs2001SEmax"))
+```
+
+
+
+```{r}
+k <- 20
+
+
+res.HCPC$call$t$inert.gain[1:k] |> data.frame(inert_gain = _) |>
+  ggplot() + aes(x= 1:k,y= inert_gain) + geom_bar(stat = "identity", alpha = 0.8) +
+  labs(title = "Between inertia gain", x="") 
+
+```
+
+
+```{r}
+res.HCPC_consol<-HCPC(resMCA,nb.clust= 3,consol=TRUE,graph=FALSE)
+res.HCPC2<- HCPC(resMCA,nb.clust=3,consol=FALSE,graph=FALSE)
+plot.HCPC(res.HCPC2,choice='tree',title='Arbre hiérarc hique 2')
+plot.HCPC(res.HCPC2,choice='map',draw.tree=FALSE,title='Plan factoriel')
 ```
 
 ```{r}
-#fviz_dend(ACM_HCPC, main = "cluster with Ward method")
+fviz_cluster(res.HCPC2, geom = "point", ellipse = FALSE, show.clust.cent = FALSE, alpha = 0.8 , ggtheme = theme_minimal())+labs(title = "cluster visualization")+theme(legend.position = "bottom")
+```
+```{r}
+fviz_cluster(res.HCPC2, geom="point", ellipse = TRUE, show.clust.cent = FALSE, ggtheme = theme_minimal()) +
+ labs(title= "Cluster visualization")+
+ theme(legend.position = "none") +
+fviz_cluster(res.HCPC2, geom="point", ellipse = TRUE, show.clust.cent = FALSE, axes = c(3,4), ggtheme = theme_minimal()) +
+ labs(title= "Cluster visualization") +
+ theme(legend.position = "none")
+```
+## Avec consolidation
+Dimension 1 et 2
+```{r}
+(fviz_cluster(res.HCPC2, geom="point", ellipse = FALSE, show.clust.cent = FALSE,
+               ggtheme = theme_minimal()) +
+    labs(title= "HC without consolidation")+
+    theme(legend.position = "none") +
+  fviz_cluster(res.HCPC_consol, geom="point", ellipse = FALSE, show.clust.cent = FALSE,
+               ggtheme = theme_minimal()) +
+    labs(title= "HC with consolidation")+
+    theme(legend.position = "none"))
+```
+```{r}
+f1 <- fviz_cluster(res.HCPC2, geom = 'point', ellipse = T, axes = c(1,2),
+                   ggtheme = theme_minimal()) +
+  labs(title= "Visualisation des clusters sans consolidation") +
+  theme(legend.position = "none")
+
+f2 <- fviz_cluster(res.HCPC_consol, geom = 'point', ellipse = T, axes = c(1,2),
+                 ggtheme = theme_minimal()) +
+  labs(title= "Visualisation des clusters avec consolidation") +
+  theme(legend.position = "none")
+ggarrange(f1,f2)
+```
+
+
+## Dimension 3 et 4 
+```{r}
+f1 <- fviz_cluster(res.HCPC2, geom = 'point', ellipse = T, axes = c(3,4),
+                   ggtheme = theme_minimal()) +
+  labs(title= "Visualisation des clusters sans consolidation") +
+  theme(legend.position = "none")
+
+f2 <- fviz_cluster(res.HCPC_consol, geom = 'point', ellipse = T, axes = c(1,2),
+                 ggtheme = theme_minimal()) +
+  labs(title= "Visualisation des clusters avec consolidation") +
+  theme(legend.position = "none")
+ggarrange(f1,f2)
 ```
 
 
 
-## reste 
+### Paragons
+
+```{r}
+para<-res.HCPC_consol$desc.ind$para
+dist<-res.HCPC_consol$desc.ind$dist
+par1 <- names(para[[1]])
+par2 <- names(para[[2]])
+par3 <- names(para[[3]])
+
+dist1 <- names(dist[[1]])
+dist2 <- names(dist[[2]])
+dist3 <- names(dist[[3]])
+
+
+```
+
+
+
+
+```{r}
+df[c(par1, par2, par3),] |>
+  select(-adresse, -numero_dpe) |>
+  kable() |>
+  kable_styling(
+    full_width = FALSE,
+    position = "center", font_size = 16,
+    bootstrap_options = c("striped", "hover", "condensed")
+  )  |> pack_rows(
+  "Cluster 1", 1, length(par1)
+) |> pack_rows(
+  "Cluster 2", length(par1) +1 , length(par1) + length(par2)
+) |> pack_rows(
+  "Cluster 3", length(par1)+ length(par2)  +1 , length(par1) + length(par2) + length(par3)
+) 
+```
+
+```{r}
+df[c(dist1, dist2,dist3),] |>
+  select(-adresse, -numero_dpe) |>
+  kable() |>
+  kable_styling(
+    full_width = FALSE,
+    position = "center", font_size = 16,
+    bootstrap_options = c("striped", "hover", "condensed")
+  )  |>
+  pack_rows(
+    "Cluster 1", 1, length(dist1)
+  )  |> pack_rows(
+  "Cluster 2", length(dist1) +1 , length(dist1) + length(dist2)
+) |> pack_rows(
+  "Cluster 3", length(dist1)+ length(dist2)  +1 , length(dist1) + length(dist2) + length(dist3)
+) 
+```
+
+```{r}
+options(scipen = 0)
+res.HCPC_consol$desc.var$test.chi2 %>% 
+  as.data.frame() %>% 
+  kable(digits = 200) %>% 
+  kable_styling(font_size = 16)
+  
+
+
+```
+
+```{r}
+res.HCPC_consol$desc.var$category$`1`%>% 
+  kable(digits = c(1,1,1,200,2)) %>% 
+  kable_styling(font_size = 16)
+```
+
+```{r}
+res.HCPC_consol$desc.var$category$`2` %>% 
+  kable(digits = c(1,1,1,200,2)) %>% 
+  kable_styling(font_size = 16)
+```
+
+
+```{r}
+res.HCPC_consol$desc.var$category$`3` %>% 
+  kable(digits = c(1,1,1,200,2)) %>% 
+  kable_styling(font_size = 16)
+```
+
+
+
