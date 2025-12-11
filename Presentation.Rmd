@@ -6,14 +6,14 @@ author:
 - Fatou Diop Ndeye
 date: "`r Sys.Date()`"
 output:
+  ioslides_presentation:
+    highlight: tango
+  slidy_presentation:
+    highlight: tango
   beamer_presentation:
     slide_level: 2
     theme: Madrid
     colortheme: dolphin
-    highlight: tango
-  ioslides_presentation:
-    highlight: tango
-  slidy_presentation:
     highlight: tango
 ---
 
@@ -44,6 +44,8 @@ sum(is.na(dfbefore))
 df <- na.omit(dfbefore)
 
 ```
+
+
 
 
 
@@ -87,40 +89,37 @@ length(unique(df$numero_dpe))
 
 # Analyse des Correspondances Factorielles
 ```{r, echo= FALSE}
-res.CA<-CA(df[,-c(4,5)],quali.sup=c(4,5),quanti.sup=c(1,3,6,11),graph=FALSE)
+Tab <- table(df$etiquette_dpe, df$etiquette_ges)
+res.CA <- CA(Tab, graph= FALSE)
 
-fviz_ca(res.CA,
-        col.quali.sup = "#FF00FF",
-        repel = TRUE,
-        label = c("var","quali")) +
-  theme_minimal() +                # thème épuré
-  theme(plot.title = element_text(size=16, face="bold", color="darkblue", a=0.1),
-        axis.title = element_text(size=14, face="italic"),
-        legend.position = "bottom")
+fviz_ca(res.CA, repel = TRUE ) +
+  theme_minimal() +
+  theme()
 
 
 ```
 
 
 
-
-
 ## Présentation générale de l'ACF
 
+```{r}
+pourcent <- function(x){x*100}
+restest <- chisq.test(Tab)
+Tabresult <- c(paste("$\\chi^2_{obs}=$",round(restest$statistic, 2)),
+               paste("df =", restest$parameter),
+               paste("$\\test{p_value} =",round(restest$p.value,6)
+))
+kable(Tabresult, col.names = "Resultat test") |>  kable_minimal(full_width = F)
+```
 
 
 ##  Description des variables
 
 ### Variables actives: 
-Étiquette_dpe, Étiquette_ges, Année_construction, Nombre_appartement
+Étiquette_dpe, Étiquette_ges
 
-
-### Variables quantitatives supplémentaires:
-Consommation.annuelle..., Surface_habitable, Émission_ges_5_usages, Coût_total_5_usages
-
-### variable exclue:
-Adresse, Numero_dpe, Conso_5_usages_ef, Consommation.annuelle.moyenne...
-
+pour quoi? 
 
 ## Qualité globale de l'ACF
 
@@ -132,13 +131,30 @@ fviz_screeplot(res.CA, addlabels =TRUE, barfill = "blue")
 ::: 
 
 ::: {.column width="50%"}
-L'Axe 1 et 2 cumulent `r round(res.CA$eig[1,3]+res.CA$eig[2,3],1)` % de l'inertie total
+
+L'Axe 1 et 2 cumulent `r round;(res.CA$eig[2,3],1)` % de l'inertie total
 
 :::
 
 ::::
 
 ## interprétation de l'axe 1 
+
+```{r}
+fig1 <- fviz_contrib(res.CA, choice = "row", axes = 1) +
+  ggtitle("Contribution des DPE à la Dime 1") +
+  theme_minimal()
+
+fig2 <- fviz_contrib(res.CA, choice = "col", axes = 1) +
+  ggtitle("Contribution des GES à la Dim1") +
+  theme_minimal() +
+  theme(axis.title.x = element_text(text = "étiquette GES"))
+
+
+ggarrange(fig1, fig2, ncol = 2)
+
+```
+
 
 ## interprétation de l'axe 2
 
