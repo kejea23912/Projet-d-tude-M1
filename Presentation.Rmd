@@ -1,5 +1,5 @@
 ---
-title: "exemple de presentation"
+title: "Présentation Datamining et datavisualisation"
 author:
 - "Kenny Jean-elie"
 - "Ibrahima Caba Bah"
@@ -78,12 +78,11 @@ colnames(DPE)[3] <- "C.moyenne/com"
 
 
 
-# Analyse en composantes principales
+# Analyse en Composantes Principales
 
 
 ```{r, include= FALSE}
 resacp <- PCA(DPE, graph = T, quali.sup = 4:7)
-resacp
 ```
 
 ## Matrice de corrélation
@@ -147,7 +146,7 @@ Tab |> kable(digits = c(2,1,1))
 fig1 <- fviz_contrib(resacp,choice="var",axes=1) + ggtitle("Contributions des variables Axes 1")
 fig2 <- fviz_contrib(resacp,choice="var",axes=2) + ggtitle("Contributions des variables Axes 2")
 fig3 <- fviz_contrib(resacp,choice="var",axes=3) + ggtitle("Contributions des variables Axes 3")
-ggarrange(fig1, fig2 ,fig3, ncol = 2)
+ggarrange(fig1, fig2 ,fig3, ncol = 3)
 ```
 
 ## Représentation des variables avec la qualité de représentation
@@ -208,7 +207,7 @@ L'Axe 1 et 2 cumulent `r round;(res.CA$eig[2,3])` % de l'inertie total
 res.CA$eig |> kable(digits = c(2,1,1))
 ```
 
-## interprétation de l'axe 1 
+## Interprétation de l'axe 1 
 
 ```{r}
 fig1 <- fviz_contrib(res.CA, choice = "row", axes = 1, fill = "red") +
@@ -224,7 +223,7 @@ ggarrange(fig1, fig2, ncol = 2)
 ```
 
 
-## interprétation de l'axe 2
+## Interprétation de l'axe 2
 
 ```{r}
 fig1 <- fviz_contrib(res.CA, choice = "row", axes = 2, fill= "red") +
@@ -240,7 +239,7 @@ ggarrange(fig1, fig2, ncol = 2)
 
 ```
 
-## interprétation de l'axe 3
+## Interprétation de l'axe 3
 
 ```{r}
 fig1 <- fviz_contrib(res.CA, choice = "row", axes = 3, fill= "red") +
@@ -257,7 +256,7 @@ ggarrange(fig1, fig2, ncol = 2)
 ```
 
 
-## interprétation de l'axe 4
+## Interprétation de l'axe 4
 
 ```{r}
 fig1 <- fviz_contrib(res.CA, choice = "row", axes = 4, fill= "red") +
@@ -274,20 +273,19 @@ ggarrange(fig1, fig2, ncol = 2)
 ```
 
 
-## synthèse finale
+## Synthèse finale
+
 ```{r}
-fviz_ca(res.CA, repel = TRUE ) +
-  theme_minimal() +
-  theme()
+fviz_ca(res.CA, axes = c(1, 2), repel = TRUE) +
+  theme_minimal() 
 ```
-## synthèse finale 
+## Synthèse finale 
+
 ```{r}
-fviz_ca(res.CA, axes = c(2,3), repel = TRUE) +
+fviz_ca(res.CA, axes = c(3, 4), repel = TRUE) +
   theme_minimal()
 
 ```
-
-
 
 # Analyse des correspondances multiples
 
@@ -391,7 +389,10 @@ fviz_mca(resMCA,
 
 
 # Mise en Oeuvre de la clasification non supervisée à partir de l'ACM
-On commence par faire par faire une classification hierarchique ascendante sur la sortie de l'ACM avec consolidation puis faire la méthodes **k-means** 
+On commence par faire par faire une classification hiérarchique ascendante sur la sortie de l'ACM avec consolidation puis faire la méthodes **k-means** 
+
+## 1
+
 ```{r}
 res.HCPC<-HCPC(resMCA,nb.clust=4,consol=FALSE,graph=FALSE)
 plot.HCPC(res.HCPC,choice='tree',title='Arbre hiérarc hique')
@@ -399,7 +400,7 @@ plot.HCPC(res.HCPC,choice='map',draw.tree=FALSE,title='Plan factoriel')
 
 ```
 
-
+## 2
 
 ```{r}
 fviz_nbclust(resMCA$ind$coord, hcut, method = "silhouette",
@@ -409,7 +410,7 @@ fviz_nbclust(resMCA$ind$coord, hcut, method = "silhouette",
                   maxSE = list("Tibs2001SEmax"))
 ```
 
-
+## 3
 
 ```{r}
 k <- 20
@@ -421,6 +422,7 @@ res.HCPC$call$t$inert.gain[1:k] |> data.frame(inert_gain = _) |>
 
 ```
 
+## 4
 
 ```{r}
 res.HCPC_consol<-HCPC(resMCA,nb.clust= 3,consol=TRUE,graph=FALSE)
@@ -429,9 +431,14 @@ plot.HCPC(res.HCPC2,choice='tree',title='Arbre hiérarc hique 2')
 plot.HCPC(res.HCPC2,choice='map',draw.tree=FALSE,title='Plan factoriel')
 ```
 
+## 5 
+
 ```{r}
 fviz_cluster(res.HCPC2, geom = "point", ellipse = FALSE, show.clust.cent = FALSE, alpha = 0.8 , ggtheme = theme_minimal())+labs(title = "cluster visualization")+theme(legend.position = "bottom")
 ```
+
+## 6 
+
 ```{r}
 fviz_cluster(res.HCPC2, geom="point", ellipse = TRUE, show.clust.cent = FALSE, ggtheme = theme_minimal()) +
  labs(title= "Cluster visualization")+
@@ -440,6 +447,7 @@ fviz_cluster(res.HCPC2, geom="point", ellipse = TRUE, show.clust.cent = FALSE, a
  labs(title= "Cluster visualization") +
  theme(legend.position = "none")
 ```
+
 ## Avec consolidation
 Dimension 1 et 2
 ```{r}
@@ -452,6 +460,9 @@ Dimension 1 et 2
     labs(title= "HC with consolidation")+
     theme(legend.position = "none"))
 ```
+
+## 
+
 ```{r}
 f1 <- fviz_cluster(res.HCPC2, geom = 'point', ellipse = T, axes = c(1,2),
                    ggtheme = theme_minimal()) +
@@ -482,9 +493,7 @@ ggarrange(f1,f2)
 
 
 
-### Paragons
-
-```{r}
+```{r, include=FALSE}
 para<-res.HCPC_consol$desc.ind$para
 dist<-res.HCPC_consol$desc.ind$dist
 par1 <- names(para[[1]])
@@ -499,71 +508,89 @@ dist3 <- names(dist[[3]])
 ```
 
 
-
+## 7
 
 ```{r}
-df[c(par1, par2, par3),] |>
+df[c(par1, par2, par3), ] |>
   select(-adresse, -numero_dpe) |>
-  kable() |>
+  kable(format = "latex", booktabs = TRUE) |>
   kable_styling(
     full_width = FALSE,
-    position = "center", font_size = 16,
-    bootstrap_options = c("striped", "hover", "condensed")
-  )  |> pack_rows(
-  "Cluster 1", 1, length(par1)
-) |> pack_rows(
-  "Cluster 2", length(par1) +1 , length(par1) + length(par2)
-) |> pack_rows(
-  "Cluster 3", length(par1)+ length(par2)  +1 , length(par1) + length(par2) + length(par3)
-) 
+    position = "center", 
+    font_size = 7,
+    latex_options = c("scale_down", "HOLD_position")
+  ) |> 
+  pack_rows(
+    "Cluster 1", 1, length(par1)
+  ) |> 
+  pack_rows(
+    "Cluster 2", length(par1) + 1, length(par1) + length(par2)
+  ) |> 
+  pack_rows(
+    "Cluster 3", length(par1) + length(par2) + 1, 
+    length(par1) + length(par2) + length(par3)
+  )
 ```
 
+## 8 
+
 ```{r}
-df[c(dist1, dist2,dist3),] |>
+df[c(dist1, dist2, dist3), ] |>
   select(-adresse, -numero_dpe) |>
-  kable() |>
+  kable(format = "latex", booktabs = TRUE) |>
   kable_styling(
     full_width = FALSE,
-    position = "center", font_size = 16,
-    bootstrap_options = c("striped", "hover", "condensed")
-  )  |>
+    position = "center", 
+    font_size = 7,
+    latex_options = c("scale_down", "HOLD_position")
+  ) |>
   pack_rows(
     "Cluster 1", 1, length(dist1)
-  )  |> pack_rows(
-  "Cluster 2", length(dist1) +1 , length(dist1) + length(dist2)
-) |> pack_rows(
-  "Cluster 3", length(dist1)+ length(dist2)  +1 , length(dist1) + length(dist2) + length(dist3)
-) 
+  ) |> 
+  pack_rows(
+    "Cluster 2", length(dist1) + 1, length(dist1) + length(dist2)
+  ) |> 
+  pack_rows(
+    "Cluster 3", length(dist1) + length(dist2) + 1, 
+    length(dist1) + length(dist2) + length(dist3)
+  )
 ```
+
+## 8
 
 ```{r}
 options(scipen = 0)
-res.HCPC_consol$desc.var$test.chi2 %>% 
-  as.data.frame() %>% 
-  kable(digits = 200) %>% 
-  kable_styling(font_size = 16)
+res.HCPC_consol$desc.var$test.chi2 |> 
+  as.data.frame() |>  
+  kable(digits = 20) |>  
+  kable_styling(font_size = 10, latex_options = c("scale_down", "HOLD_position"))
   
 
 
 ```
 
+## 9 
+
 ```{r}
-res.HCPC_consol$desc.var$category$`1`%>% 
-  kable(digits = c(1,1,1,200,2)) %>% 
-  kable_styling(font_size = 16)
+res.HCPC_consol$desc.var$category$`1` |>  
+  kable(digits = c(1,1,1,200,2)) |> 
+  kable_styling(font_size = 8, latex_options = c("scale_down", "HOLD_position"))
+```
+## 10
+
+```{r}
+res.HCPC_consol$desc.var$category$`2` |> 
+  kable(digits = c(1,1,1,200,2)) |> 
+  kable_styling(font_size = 8, latex_options = c("scale_down", "HOLD_position"))
 ```
 
-```{r}
-res.HCPC_consol$desc.var$category$`2` %>% 
-  kable(digits = c(1,1,1,200,2)) %>% 
-  kable_styling(font_size = 16)
-```
+## 11
 
 
 ```{r}
-res.HCPC_consol$desc.var$category$`3` %>% 
-  kable(digits = c(1,1,1,200,2)) %>% 
-  kable_styling(font_size = 16)
+res.HCPC_consol$desc.var$category$`3` |> 
+  kable(digits = c(1,1,1,200,2), format = "latex", booktabs = TRUE) |> 
+  kable_styling(font_size = 8, latex_options = c("scale_down", "HOLD_position"))
 ```
 
 
