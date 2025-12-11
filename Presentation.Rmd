@@ -22,7 +22,25 @@ library(tidyverse)
 library(FactoMineR)
 library(factoextra)
 library(Factoshiny)
+library(kableExtra)
+library(patchwork)
+library(ggpubr)
 ```
+
+```{r}
+col_ind <- "#008EA0FF" #"#357EBDFF"
+col_var <- "#C71000FF"#D43F3AFF"
+col_bar <- "#8A419888"#5CB85CFF"
+logodark <- "#5A9599EE"
+corail <- "#FF6348FF"
+orange <- "#FF6F00FF"
+accent <- "#00817c"
+alert <- "#e64173"
+violet <- "#8A4198FF"
+pal_js <- c(col_ind, "deeppink1", "seagreen2", orange, violet,  col_var)
+```
+
+
 
 
 ```{r, Importaion de la base de données , include=FALSE}
@@ -175,6 +193,9 @@ fviz_eig(ACM)
 
 #
 
+```{r}
+Factoshiny(df2)
+```
 
 
 
@@ -185,13 +206,178 @@ fviz_eig(ACM)
 # Mise en Oeuvre de la clasification non supervisée à partir de l'ACM
 On commence par faire par faire une classification hierarchique ascendante sur la sortie de l'ACM avec consolidation puis faire la méthodes **k-means** 
 ```{r}
-ACM_HCPC<-HCPC(ACM, graph = F, consol = F, cex = 0.3)
+res.HCPC<-HCPC(ACM,nb.clust=4,consol=FALSE,graph=FALSE)
+plot.HCPC(res.HCPC,choice='tree',title='Arbre hiérarc hique')
+plot.HCPC(res.HCPC,choice='map',draw.tree=FALSE,title='Plan factoriel')
+
+```
+
+
+
+```{r}
+fviz_nbclust(ACM$ind$coord, hcut, method = "silhouette",
+                  barfill = col_ind,
+                  barcolor = col_ind,
+                  linecolor = col_ind,
+                  maxSE = list("Tibs2001SEmax"))
+```
+
+
+
+```{r}
+k <- 20
+
+
+res.HCPC$call$t$inert.gain[1:k] |> data.frame(inert_gain = _) |>
+  ggplot() + aes(x= 1:k,y= inert_gain) + geom_bar(stat = "identity", alpha = 0.8) +
+  labs(title = "Between inertia gain", x="") 
+
+```
+
+
+```{r}
+res.HCPC_consol<-HCPC(res.MCA,nb.clust= 3,consol=TRUE,graph=FALSE)
+res.HCPC2<- HCPC(res.MCA,nb.clust=3,consol=FALSE,graph=FALSE)
+plot.HCPC(res.HCPC2,choice='tree',title='Arbre hiérarc hique 2')
+plot.HCPC(res.HCPC2,choice='map',draw.tree=FALSE,title='Plan factoriel')
 ```
 
 ```{r}
-#fviz_dend(ACM_HCPC, main = "cluster with Ward method")
+fviz_cluster(res.HCPC2, geom = "point", ellipse = FALSE, show.clust.cent = FALSE, alpha = 0.8 , ggtheme = theme_minimal())+labs(title = "cluster visualization")+theme(legend.position = "bottom")
+```
+```{r}
+fviz_cluster(res.HCPC2, geom="point", ellipse = TRUE, show.clust.cent = FALSE, ggtheme = theme_minimal()) +
+ labs(title= "Cluster visualization")+
+ theme(legend.position = "none") +
+fviz_cluster(res.HCPC2, geom="point", ellipse = TRUE, show.clust.cent = FALSE, axes = c(3,4), ggtheme = theme_minimal()) +
+ labs(title= "Cluster visualization") +
+ theme(legend.position = "none")
+```
+## Avec consolidation
+Dimension 1 et 2
+```{r}
+(fviz_cluster(res.HCPC2, geom="point", ellipse = FALSE, show.clust.cent = FALSE,
+               ggtheme = theme_minimal()) +
+    labs(title= "HC without consolidation")+
+    theme(legend.position = "none") +
+  fviz_cluster(res.HCPC_consol, geom="point", ellipse = FALSE, show.clust.cent = FALSE,
+               ggtheme = theme_minimal()) +
+    labs(title= "HC with consolidation")+
+    theme(legend.position = "none"))
+```
+```{r}
+f1 <- fviz_cluster(res.HCPC2, geom = 'point', ellipse = T, axes = c(1,2),
+                   ggtheme = theme_minimal()) +
+  labs(title= "Visualisation des clusters sans consolidation") +
+  theme(legend.position = "none")
+
+f2 <- fviz_cluster(res.HCPC_consol, geom = 'point', ellipse = T, axes = c(1,2),
+                 ggtheme = theme_minimal()) +
+  labs(title= "Visualisation des clusters avec consolidation") +
+  theme(legend.position = "none")
+ggarrange(f1,f2)
+```
+
+
+## Dimension 3 et 4 
+```{r}
+f1 <- fviz_cluster(res.HCPC2, geom = 'point', ellipse = T, axes = c(3,4),
+                   ggtheme = theme_minimal()) +
+  labs(title= "Visualisation des clusters sans consolidation") +
+  theme(legend.position = "none")
+
+f2 <- fviz_cluster(res.HCPC_consol, geom = 'point', ellipse = T, axes = c(1,2),
+                 ggtheme = theme_minimal()) +
+  labs(title= "Visualisation des clusters avec consolidation") +
+  theme(legend.position = "none")
+ggarrange(f1,f2)
 ```
 
 
 
-## reste 
+### Paragons
+
+```{r}
+para<-res.HCPC_consol$desc.ind$para
+dist<-res.HCPC_consol$desc.ind$dist
+par1 <- names(para[[1]])
+par2 <- names(para[[2]])
+par3 <- names(para[[3]])
+
+dist1 <- names(dist[[1]])
+dist2 <- names(dist[[2]])
+dist3 <- names(dist[[3]])
+
+
+```
+
+
+
+
+```{r}
+df[c(par1, par2, par3),] |>
+  select(-adresse, -numero_dpe) |>
+  kable() |>
+  kable_styling(
+    full_width = FALSE,
+    position = "center", font_size = 16,
+    bootstrap_options = c("striped", "hover", "condensed")
+  )  |> pack_rows(
+  "Cluster 1", 1, length(par1)
+) |> pack_rows(
+  "Cluster 2", length(par1) +1 , length(par1) + length(par2)
+) |> pack_rows(
+  "Cluster 3", length(par1)+ length(par2)  +1 , length(par1) + length(par2) + length(par3)
+) 
+```
+
+```{r}
+df[c(dist1, dist2,dist3),] |>
+  select(-adresse, -numero_dpe) |>
+  kable() |>
+  kable_styling(
+    full_width = FALSE,
+    position = "center", font_size = 16,
+    bootstrap_options = c("striped", "hover", "condensed")
+  )  |>
+  pack_rows(
+    "Cluster 1", 1, length(dist1)
+  )  |> pack_rows(
+  "Cluster 2", length(dist1) +1 , length(dist1) + length(dist2)
+) |> pack_rows(
+  "Cluster 3", length(dist1)+ length(dist2)  +1 , length(dist1) + length(dist2) + length(dist3)
+) 
+```
+
+```{r}
+options(scipen = 0)
+res.HCPC_consol$desc.var$test.chi2 %>% 
+  as.data.frame() %>% 
+  kable(digits = 200) %>% 
+  kable_styling(font_size = 16)
+  
+
+
+```
+
+```{r}
+res.HCPC_consol$desc.var$category$`1`%>% 
+  kable(digits = c(1,1,1,200,2)) %>% 
+  kable_styling(font_size = 16)
+```
+
+```{r}
+res.HCPC_consol$desc.var$category$`2` %>% 
+  kable(digits = c(1,1,1,200,2)) %>% 
+  kable_styling(font_size = 16)
+```
+
+
+```{r}
+res.HCPC_consol$desc.var$category$`3` %>% 
+  kable(digits = c(1,1,1,200,2)) %>% 
+  kable_styling(font_size = 16)
+```
+
+
+
