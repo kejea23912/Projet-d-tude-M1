@@ -108,7 +108,7 @@ corrplot(TabCor,
 resacp$eig |>  kable(digits = c(2,1,1))
 ```
 
-*Représentation graphique*
+## Représentation graphique
 
 ```{r, echo=FALSE, dev="png", dpi=100}
 fviz_eig(resacp, addlabels = TRUE,
@@ -175,6 +175,12 @@ res.CA <- CA(Tab, graph= FALSE)
 
 ## Présentation générale de l'ACF
 
+### Variables actives: 
+Étiquette_dpe, Étiquette_ges
+
+
+## Test de Chi2
+
 ```{r}
 pourcent <- function(x){x*100}
 restest <- chisq.test(Tab)
@@ -185,13 +191,6 @@ Tabresult <- c(paste("$\\chi^2_{obs}=$",round(restest$statistic, 2)),
 kable(Tabresult, col.names = "Resultat test") |>  kable_minimal(full_width = F)
 ```
 
-
-##  Description des variables
-
-### Variables actives: 
-Étiquette_dpe, Étiquette_ges
-
-pour quoi? 
 
 ## Qualité globale de l'ACF
 
@@ -321,7 +320,7 @@ resMCA$eig |> kable(2,1,1)
 ```
 ## Inertie 
 ```{r}
-fviz_eig(resMCA)
+fviz_eig(resMCA , addlabels =TRUE)
 ```
 
 ## Contribution des variables
@@ -335,7 +334,6 @@ fig3 <- fviz_contrib(resMCA, choice="var", axes = 3, ggtheme = theme_classic()) 
 
 ggarrange(fig1, fig2, fig3, ncol = 3)
 ```
-
 
 
 ## corrélation des var

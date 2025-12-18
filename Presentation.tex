@@ -1,0 +1,780 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+  ignorenonframetext,
+]{beamer}
+\newif\ifbibliography
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% remove section numbering
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{section title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{subsection title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\usetheme[]{Madrid}
+\usecolortheme[]{dolphin}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+\usepackage{caption}
+% Make caption package work with longtable
+\makeatletter
+\def\fnum@table{\tablename~\thetable}
+\makeatother
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Présentation Datamining et datavisualisation},
+  pdfauthor={Kenny Jean-elie; Ibrahima Caba Bah; Fatou Diop Ndeye},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Présentation Datamining et datavisualisation}
+\author{Kenny Jean-elie \and Ibrahima Caba Bah \and Fatou Diop Ndeye}
+\date{2025-12-12}
+
+\begin{document}
+\frame{\titlepage}
+
+\section{Analyse en Composantes
+Principales}\label{analyse-en-composantes-principales}
+
+\begin{frame}{Matrice de corrélation}
+\phantomsection\label{matrice-de-corruxe9lation}
+\pandocbounded{\includegraphics[keepaspectratio]{Presentation_files/figure-beamer/unnamed-chunk-3-1.png}}
+\end{frame}
+
+\begin{frame}{Etude des inerties}
+\phantomsection\label{etude-des-inerties}
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.0933}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1467}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3067}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.4533}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+eigenvalue
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+percentage of variance
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+cumulative percentage of variance
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+comp 1 & 3.88 & 43.1 & 43.1 \\
+comp 2 & 1.30 & 14.5 & 57.5 \\
+comp 3 & 1.21 & 13.4 & 70.9 \\
+comp 4 & 1.03 & 11.4 & 82.4 \\
+comp 5 & 0.79 & 8.8 & 91.2 \\
+comp 6 & 0.68 & 7.5 & 98.7 \\
+comp 7 & 0.08 & 0.9 & 99.6 \\
+comp 8 & 0.03 & 0.4 & 100.0 \\
+comp 9 & 0.00 & 0.0 & 100.0 \\
+\bottomrule\noalign{}
+\end{longtable}
+\end{frame}
+
+\begin{frame}{Représentation graphique}
+\phantomsection\label{repruxe9sentation-graphique}
+\pandocbounded{\includegraphics[keepaspectratio]{Presentation_files/figure-beamer/unnamed-chunk-5-1.png}}
+\end{frame}
+
+\begin{frame}{Observation des variables}
+\phantomsection\label{observation-des-variables}
+\begin{longtable}[]{@{}lrrr@{}}
+\toprule\noalign{}
+& Dim.1 & Dim.2 & Dim.3 \\
+\midrule\noalign{}
+\endhead
+C.totale & 0.001 & 0.801 & 0.036 \\
+C.moyenne/adr & 0.021 & 0.809 & 0.005 \\
+C.moyenne/com & -0.031 & -0.019 & 0.774 \\
+annee\_construction & -0.056 & -0.024 & 0.773 \\
+surface\_habitable\_logement & 0.972 & 0.013 & 0.071 \\
+conso\_5.usages\_ef & 0.993 & -0.022 & 0.002 \\
+emission\_ges\_5\_usages & 0.984 & -0.046 & 0.000 \\
+cout\_total\_5\_usages & 0.986 & 0.036 & -0.004 \\
+nombre\_appartement & 0.005 & -0.003 & -0.074 \\
+\bottomrule\noalign{}
+\end{longtable}
+\end{frame}
+
+\begin{frame}{Qualité de représentation des variables sur l'axe F1F2}
+\phantomsection\label{qualituxe9-de-repruxe9sentation-des-variables-sur-laxe-f1f2}
+\begin{longtable}[]{@{}lr@{}}
+\toprule\noalign{}
+& x \\
+\midrule\noalign{}
+\endhead
+C.totale & 0.642 \\
+C.moyenne/adr & 0.655 \\
+C.moyenne/com & 0.001 \\
+annee\_construction & 0.004 \\
+surface\_habitable\_logement & 0.944 \\
+conso\_5.usages\_ef & 0.987 \\
+emission\_ges\_5\_usages & 0.971 \\
+cout\_total\_5\_usages & 0.974 \\
+nombre\_appartement & 0.000 \\
+\bottomrule\noalign{}
+\end{longtable}
+\end{frame}
+
+\begin{frame}{Tableau des coordonnées des variables}
+\phantomsection\label{tableau-des-coordonnuxe9es-des-variables}
+\begin{longtable}[]{@{}lrrr@{}}
+\toprule\noalign{}
+& F1 & F2 & F3 \\
+\midrule\noalign{}
+\endhead
+C.totale & 0.00 & 0.8 & 0.0 \\
+C.moyenne/adr & 0.02 & 0.8 & 0.0 \\
+C.moyenne/com & -0.03 & 0.0 & 0.8 \\
+annee\_construction & -0.06 & 0.0 & 0.8 \\
+surface\_habitable\_logement & 0.97 & 0.0 & 0.1 \\
+conso\_5.usages\_ef & 0.99 & 0.0 & 0.0 \\
+emission\_ges\_5\_usages & 0.98 & 0.0 & 0.0 \\
+cout\_total\_5\_usages & 0.99 & 0.0 & 0.0 \\
+nombre\_appartement & 0.00 & 0.0 & -0.1 \\
+\bottomrule\noalign{}
+\end{longtable}
+\end{frame}
+
+\begin{frame}{Etude des contributions des variables}
+\phantomsection\label{etude-des-contributions-des-variables}
+\pandocbounded{\includegraphics[keepaspectratio]{Presentation_files/figure-beamer/unnamed-chunk-9-1.png}}
+\end{frame}
+
+\begin{frame}{Représentation des variables avec la qualité de
+représentation}
+\phantomsection\label{repruxe9sentation-des-variables-avec-la-qualituxe9-de-repruxe9sentation}
+\pandocbounded{\includegraphics[keepaspectratio]{Presentation_files/figure-beamer/unnamed-chunk-10-1.png}}
+\end{frame}
+
+\section{Analyse des Correspondances
+Factorielles}\label{analyse-des-correspondances-factorielles}
+
+\begin{frame}{Présentation générale de l'ACF}
+\phantomsection\label{pruxe9sentation-guxe9nuxe9rale-de-lacf}
+\begin{block}{Variables actives:}
+\phantomsection\label{variables-actives}
+Étiquette\_dpe, Étiquette\_ges
+
+Pourquoi?
+\end{block}
+\end{frame}
+
+\begin{frame}{Test de Chi2}
+\phantomsection\label{test-de-chi2}
+\begin{longtable}[t]{l}
+\toprule
+Resultat test\\
+\midrule
+\$\textbackslash{}chi\textasciicircum{}2\_\{obs\}=\$ 14907.6\\
+df = 36\\
+\$\textbackslash{}test\{p\_value\} = 0\\
+\bottomrule
+\end{longtable}
+\end{frame}
+
+\begin{frame}{Qualité globale de l'ACF}
+\phantomsection\label{qualituxe9-globale-de-lacf}
+\pandocbounded{\includegraphics[keepaspectratio]{Presentation_files/figure-beamer/unnamed-chunk-13-1.pdf}}
+L'Axe 1 et 2 cumulent 57.8427404 \% de l'inertie total
+\end{frame}
+
+\begin{frame}{Qualité de lACF}
+\phantomsection\label{qualituxe9-de-lacf}
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.0811}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1486}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3108}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.4595}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+eigenvalue
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+percentage of variance
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+cumulative percentage of variance
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+dim 1 & 0.63 & 30.3 & 30.3 \\
+dim 2 & 0.57 & 27.5 & 57.8 \\
+dim 3 & 0.42 & 20.0 & 77.9 \\
+dim 4 & 0.31 & 14.7 & 92.5 \\
+dim 5 & 0.13 & 6.2 & 98.7 \\
+dim 6 & 0.03 & 1.3 & 100.0 \\
+\bottomrule\noalign{}
+\end{longtable}
+\end{frame}
+
+\begin{frame}{Interprétation de l'axe 1}
+\phantomsection\label{interpruxe9tation-de-laxe-1}
+\pandocbounded{\includegraphics[keepaspectratio]{Presentation_files/figure-beamer/unnamed-chunk-15-1.pdf}}
+\end{frame}
+
+\begin{frame}{Interprétation de l'axe 2}
+\phantomsection\label{interpruxe9tation-de-laxe-2}
+\pandocbounded{\includegraphics[keepaspectratio]{Presentation_files/figure-beamer/unnamed-chunk-16-1.pdf}}
+\end{frame}
+
+\begin{frame}{Interprétation de l'axe 3}
+\phantomsection\label{interpruxe9tation-de-laxe-3}
+\pandocbounded{\includegraphics[keepaspectratio]{Presentation_files/figure-beamer/unnamed-chunk-17-1.pdf}}
+\end{frame}
+
+\begin{frame}{Interprétation de l'axe 4}
+\phantomsection\label{interpruxe9tation-de-laxe-4}
+\pandocbounded{\includegraphics[keepaspectratio]{Presentation_files/figure-beamer/unnamed-chunk-18-1.pdf}}
+\end{frame}
+
+\begin{frame}{Synthèse finale}
+\phantomsection\label{synthuxe8se-finale}
+\pandocbounded{\includegraphics[keepaspectratio]{Presentation_files/figure-beamer/unnamed-chunk-19-1.pdf}}
+\#\# Synthèse finale
+
+\pandocbounded{\includegraphics[keepaspectratio]{Presentation_files/figure-beamer/unnamed-chunk-20-1.pdf}}
+\end{frame}
+
+\section{Analyse des correspondances
+multiples}\label{analyse-des-correspondances-multiples}
+
+\begin{frame}{Inertie}
+\phantomsection\label{inertie}
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.0933}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1467}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3067}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.4533}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+eigenvalue
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+percentage of variance
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+cumulative percentage of variance
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+dim 1 & 0.3 & 11.4 & 11.4 \\
+dim 2 & 0.3 & 8.8 & 20.2 \\
+dim 3 & 0.2 & 6.5 & 26.7 \\
+dim 4 & 0.2 & 5.9 & 32.6 \\
+dim 5 & 0.2 & 5.2 & 37.8 \\
+dim 6 & 0.1 & 4.9 & 42.7 \\
+dim 7 & 0.1 & 4.5 & 47.2 \\
+dim 8 & 0.1 & 4.1 & 51.3 \\
+dim 9 & 0.1 & 4.0 & 55.3 \\
+dim 10 & 0.1 & 3.9 & 59.2 \\
+dim 11 & 0.1 & 3.9 & 63.1 \\
+dim 12 & 0.1 & 3.7 & 66.9 \\
+dim 13 & 0.1 & 3.7 & 70.5 \\
+dim 14 & 0.1 & 3.5 & 74.0 \\
+dim 15 & 0.1 & 3.4 & 77.5 \\
+dim 16 & 0.1 & 3.3 & 80.7 \\
+dim 17 & 0.1 & 3.2 & 83.9 \\
+dim 18 & 0.1 & 2.9 & 86.9 \\
+dim 19 & 0.1 & 2.6 & 89.5 \\
+dim 20 & 0.1 & 2.6 & 92.0 \\
+dim 21 & 0.1 & 2.2 & 94.2 \\
+dim 22 & 0.0 & 1.7 & 95.9 \\
+dim 23 & 0.0 & 1.4 & 97.3 \\
+dim 24 & 0.0 & 1.3 & 98.6 \\
+dim 25 & 0.0 & 1.0 & 99.5 \\
+dim 26 & 0.0 & 0.5 & 100.0 \\
+\bottomrule\noalign{}
+\end{longtable}
+\end{frame}
+
+\begin{frame}{Inertie}
+\phantomsection\label{inertie-1}
+\pandocbounded{\includegraphics[keepaspectratio]{Presentation_files/figure-beamer/unnamed-chunk-25-1.pdf}}
+\end{frame}
+
+\begin{frame}{Contribution des variables}
+\phantomsection\label{contribution-des-variables}
+\pandocbounded{\includegraphics[keepaspectratio]{Presentation_files/figure-beamer/unnamed-chunk-26-1.pdf}}
+\end{frame}
+
+\begin{frame}{corrélation des var}
+\phantomsection\label{corruxe9lation-des-var}
+\begin{longtable}[]{@{}lrrrrr@{}}
+\toprule\noalign{}
+& dim1 & dim2 & dim3 & dim4 & dim5 \\
+\midrule\noalign{}
+\endhead
+conso\_5.usages\_ef & 0.89 & 0.44 & 0.29 & 0.10 & 0.02 \\
+emission\_ges\_5\_usages & 0.75 & 0.49 & 0.41 & 0.09 & 0.02 \\
+cout\_total\_5\_usages & 0.71 & 0.23 & 0.35 & 0.01 & 0.04 \\
+surface\_habitable\_logement & 0.45 & 0.15 & 0.02 & 0.21 & 0.07 \\
+annee\_construction & 0.11 & 0.27 & 0.16 & 0.47 & 0.14 \\
+Conso\_totale & 0.02 & 0.22 & 0.06 & 0.04 & 0.58 \\
+Conso\_com & 0.02 & 0.11 & 0.02 & 0.25 & 0.01 \\
+nombre\_appartement & 0.01 & 0.04 & 0.11 & 0.21 & 0.37 \\
+Conso\_Moy\_log & 0.00 & 0.35 & 0.27 & 0.17 & 0.11 \\
+\bottomrule\noalign{}
+\end{longtable}
+\end{frame}
+
+\begin{frame}{visualisation des corrélation}
+\phantomsection\label{visualisation-des-corruxe9lation}
+\pandocbounded{\includegraphics[keepaspectratio]{Presentation_files/figure-beamer/unnamed-chunk-28-1.pdf}}
+\#\# visuaisation de la corrélation
+
+\pandocbounded{\includegraphics[keepaspectratio]{Presentation_files/figure-beamer/unnamed-chunk-29-1.pdf}}
+\end{frame}
+
+\begin{frame}{Nuages des points}
+\phantomsection\label{nuages-des-points}
+\pandocbounded{\includegraphics[keepaspectratio]{Presentation_files/figure-beamer/unnamed-chunk-30-1.pdf}}
+\end{frame}
+
+\section{Mise en Oeuvre de la clasification non supervisée à partir de
+l'ACM}\label{mise-en-oeuvre-de-la-clasification-non-supervisuxe9e-uxe0-partir-de-lacm}
+
+\begin{frame}{Mise en Oeuvre de la clasification non supervisée à partir
+de l'ACM}
+On commence par faire par faire une classification hiérarchique
+ascendante sur la sortie de l'ACM avec consolidation puis faire la
+méthodes \textbf{k-means}
+\end{frame}
+
+\begin{frame}{1}
+\phantomsection\label{section}
+\pandocbounded{\includegraphics[keepaspectratio]{Presentation_files/figure-beamer/unnamed-chunk-31-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Presentation_files/figure-beamer/unnamed-chunk-31-2.pdf}}
+\end{frame}
+
+\begin{frame}{2}
+\phantomsection\label{section-1}
+\pandocbounded{\includegraphics[keepaspectratio]{Presentation_files/figure-beamer/unnamed-chunk-32-1.pdf}}
+\end{frame}
+
+\begin{frame}{3}
+\phantomsection\label{section-2}
+\pandocbounded{\includegraphics[keepaspectratio]{Presentation_files/figure-beamer/unnamed-chunk-33-1.pdf}}
+\end{frame}
+
+\begin{frame}{4}
+\phantomsection\label{section-3}
+\pandocbounded{\includegraphics[keepaspectratio]{Presentation_files/figure-beamer/unnamed-chunk-34-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Presentation_files/figure-beamer/unnamed-chunk-34-2.pdf}}
+\end{frame}
+
+\begin{frame}{5}
+\phantomsection\label{section-4}
+\pandocbounded{\includegraphics[keepaspectratio]{Presentation_files/figure-beamer/unnamed-chunk-35-1.pdf}}
+\end{frame}
+
+\begin{frame}{6}
+\phantomsection\label{section-5}
+\pandocbounded{\includegraphics[keepaspectratio]{Presentation_files/figure-beamer/unnamed-chunk-36-1.pdf}}
+\end{frame}
+
+\begin{frame}{Avec consolidation}
+\phantomsection\label{avec-consolidation}
+Dimension 1 et 2
+\pandocbounded{\includegraphics[keepaspectratio]{Presentation_files/figure-beamer/unnamed-chunk-37-1.pdf}}
+\end{frame}
+
+\begin{frame}{}
+\phantomsection\label{section-6}
+\pandocbounded{\includegraphics[keepaspectratio]{Presentation_files/figure-beamer/unnamed-chunk-38-1.pdf}}
+\end{frame}
+
+\begin{frame}{Dimension 3 et 4}
+\phantomsection\label{dimension-3-et-4}
+\pandocbounded{\includegraphics[keepaspectratio]{Presentation_files/figure-beamer/unnamed-chunk-39-1.pdf}}
+\end{frame}
+
+\begin{frame}{7}
+\phantomsection\label{section-7}
+\begin{table}[H]
+\centering\begingroup\fontsize{7}{9}\selectfont
+
+\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
+\begin{tabular}{lrrrllrrrrrr}
+\toprule
+  & C.totale & C.moyenne/adr & C.moyenne/com & etiquette\_dpe & etiquette\_ges & annee\_construction & surface\_habitable\_logement & conso\_5.usages\_ef & emission\_ges\_5\_usages & cout\_total\_5\_usages & nombre\_appartement\\
+\midrule
+\addlinespace[0.3em]
+\multicolumn{12}{l}{\textbf{Cluster 1}}\\
+\hspace{1em}2456 & 152.517 & 6.355 & 2.631 & C & A & 2012 & 32.5 & 2307.9 & 130.1 & 474.0 & 15\\
+\hspace{1em}5505 & 48.794 & 4.436 & 2.631 & D & B & 1996 & 28.4 & 2899.4 & 207.0 & 562.0 & 11\\
+\hspace{1em}7440 & 63.487 & 6.349 & 2.631 & D & B & 1989 & 29.0 & 3237.8 & 231.8 & 613.0 & 11\\
+\hspace{1em}7841 & 60.750 & 4.050 & 2.631 & C & A & 1998 & 29.0 & 1982.7 & 143.1 & 533.8 & 15\\
+\hspace{1em}1359 & 200.587 & 3.647 & 2.631 & C & A & 1989 & 27.5 & 2196.2 & 150.1 & 574.3 & 57\\
+\addlinespace[0.3em]
+\multicolumn{12}{l}{\textbf{Cluster 2}}\\
+\hspace{1em}4522 & 25.529 & 1.276 & 2.619 & D & D & 1972 & 52.3 & 11105.0 & 1664.0 & 958.0 & 20\\
+\hspace{1em}4661 & 5.536 & 0.503 & 2.555 & E & E & 1970 & 43.0 & 9870.1 & 2201.2 & 990.0 & 20\\
+\hspace{1em}4690 & 14.933 & 1.358 & 2.493 & E & E & 1970 & 38.9 & 9639.7 & 2145.5 & 967.0 & 12\\
+\hspace{1em}6230 & 14.020 & 1.078 & 2.555 & D & D & 1970 & 50.5 & 11134.4 & 2480.0 & 1116.0 & 19\\
+\hspace{1em}1405 & 19.492 & 1.392 & 2.631 & E & E & 1975 & 50.8 & 11617.4 & 2587.4 & 1166.0 & 20\\
+\addlinespace[0.3em]
+\multicolumn{12}{l}{\textbf{Cluster 3}}\\
+\hspace{1em}4441 & 22.837 & 2.076 & 2.239 & D & D & 1966 & 94.1 & 16187.1 & 3275.6 & 1931.0 & 11\\
+\hspace{1em}3507 & 42.540 & 1.934 & 2.631 & D & D & 1949 & 248.7 & 53296.9 & 11943.1 & 5234.0 & 10\\
+\hspace{1em}4282 & 44.955 & 2.498 & 2.631 & C & C & 1955 & 124.5 & 16938.0 & 2847.4 & 1633.0 & 19\\
+\hspace{1em}7450 & 41.459 & 2.303 & 2.631 & D & D & 1957 & 96.8 & 16585.1 & 3070.5 & 1389.0 & 18\\
+\hspace{1em}3246 & 21.280 & 1.637 & 2.631 & E & E & 1948 & 151.9 & 34957.6 & 8357.5 & 3368.0 & 18\\
+\bottomrule
+\end{tabular}}
+\endgroup{}
+\end{table}
+\end{frame}
+
+\begin{frame}{8}
+\phantomsection\label{section-8}
+\begin{table}[H]
+\centering\begingroup\fontsize{7}{9}\selectfont
+
+\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
+\begin{tabular}{lrrrllrrrrrr}
+\toprule
+  & C.totale & C.moyenne/adr & C.moyenne/com & etiquette\_dpe & etiquette\_ges & annee\_construction & surface\_habitable\_logement & conso\_5.usages\_ef & emission\_ges\_5\_usages & cout\_total\_5\_usages & nombre\_appartement\\
+\midrule
+\addlinespace[0.3em]
+\multicolumn{12}{l}{\textbf{Cluster 1}}\\
+\hspace{1em}3016 & 75.961 & 2.532 & 2.941 & G & E & 1920 & 7.3 & 3716.2 & 624.7 & 486.0 & 40\\
+\hspace{1em}2113 & 228.565 & 2.540 & 2.941 & C & A & 2013 & 30.5 & 2180.5 & 154.3 & 478.0 & 96\\
+\hspace{1em}4053 & 238.400 & 4.865 & 2.941 & B & A & 2013 & 86.0 & 2820.4 & 189.1 & 550.0 & 49\\
+\hspace{1em}828 & 51.166 & 2.047 & 2.682 & D & A & 2021 & 37.8 & 3199.8 & 234.3 & 607.6 & 25\\
+\hspace{1em}6454 & 106.146 & 4.083 & 2.941 & C & A & 1903 & 55.1 & 2826.8 & 192.4 & 551.0 & 26\\
+\addlinespace[0.3em]
+\multicolumn{12}{l}{\textbf{Cluster 2}}\\
+\hspace{1em}2964 & 27.184 & 1.431 & 2.941 & D & D & 1967 & 60.1 & 10568.3 & 2342.7 & 1078.0 & 22\\
+\hspace{1em}3894 & 23.902 & 1.138 & 2.941 & D & D & 1971 & 57.8 & 10138.8 & 2150.2 & 1182.0 & 49\\
+\hspace{1em}3126 & 24.838 & 1.552 & 2.707 & D & D & 1959 & 52.0 & 10042.8 & 2239.6 & 1197.7 & 32\\
+\hspace{1em}5047 & 60.288 & 1.827 & 2.941 & D & D & 1959 & 64.6 & 11325.3 & 2251.0 & 1020.0 & 33\\
+\hspace{1em}5073 & 56.347 & 2.087 & 2.941 & D & D & 1956 & 73.5 & 12568.9 & 2487.2 & 1106.0 & 24\\
+\addlinespace[0.3em]
+\multicolumn{12}{l}{\textbf{Cluster 3}}\\
+\hspace{1em}2980 & 89.811 & 2.994 & 2.941 & D & D & 1950 & 86.1 & 15824.2 & 3544.4 & 1556.0 & 28\\
+\hspace{1em}5045 & 106.874 & 4.453 & 2.941 & D & C & 1967 & 202.9 & 22520.4 & 3811.9 & 3080.0 & 30\\
+\hspace{1em}5051 & 35.408 & 3.541 & 2.941 & D & D & 1900 & 116.6 & 17272.5 & 3648.6 & 1439.0 & 31\\
+\hspace{1em}7122 & 42.255 & 2.641 & 2.941 & F & F & 1930 & 89.2 & 25901.1 & 8313.9 & 2429.0 & 33\\
+\hspace{1em}7146 & 39.035 & 2.602 & 2.941 & D & D & 1939 & 91.8 & 13643.5 & 3025.8 & 1465.0 & 26\\
+\bottomrule
+\end{tabular}}
+\endgroup{}
+\end{table}
+\end{frame}
+
+\begin{frame}{8}
+\phantomsection\label{section-9}
+\begingroup\fontsize{10}{12}\selectfont
+
+\begin{longtable}[t]{lrr}
+\toprule
+ & p.value & df\\
+\midrule
+etiquette\_ges & 0.000000e+00 & 12\\
+surface\_habitable\_logement & 0.000000e+00 & 6\\
+conso\_5.usages\_ef & 0.000000e+00 & 6\\
+emission\_ges\_5\_usages & 0.000000e+00 & 6\\
+cout\_total\_5\_usages & 0.000000e+00 & 6\\
+\addlinespace
+etiquette\_dpe & 0.000000e+00 & 12\\
+annee\_construction & 0.000000e+00 & 6\\
+Conso\_totale & 0.000000e+00 & 6\\
+Conso\_Moy\_log & 0.000000e+00 & 6\\
+Conso\_com & 1.046000e-17 & 4\\
+\addlinespace
+nombre\_appartement & 7.736142e-04 & 6\\
+\bottomrule
+\end{longtable}
+\endgroup{}
+\end{frame}
+
+\begin{frame}{9}
+\phantomsection\label{section-10}
+\begingroup\fontsize{8}{10}\selectfont
+
+\begin{longtable}[t]{lrrrrr}
+\toprule
+ & Cla/Mod & Mod/Cla & Global & p.value & v.test\\
+\midrule
+cout\_total\_5\_usages=[112,679] & 91.4 & 50.8 & 25.0 & 0.000000e+00 & Inf\\
+emission\_ges\_5\_usages=(764,1.54e+03] & 83.5 & 46.4 & 25.0 & 0.000000e+00 & Inf\\
+emission\_ges\_5\_usages=[18.7,764] & 91.8 & 50.9 & 25.0 & 0.000000e+00 & Inf\\
+conso\_5.usages\_ef=[405,5.57e+03] & 99.9 & 55.4 & 25.0 & 0.000000e+00 & Inf\\
+surface\_habitable\_logement=[4.8,38.8] & 79.0 & 43.9 & 25.0 & 0.000000e+00 & 33.93\\
+\addlinespace
+conso\_5.usages\_ef=(5.57e+03,8.49e+03] & 77.2 & 42.8 & 25.0 & 0.000000e+00 & 32.01\\
+etiquette\_ges=etiquette\_ges\_B & 87.4 & 23.2 & 12.0 & 4.216257e-167 & 27.55\\
+annee\_construction=(1.98e+03,2.02e+03] & 69.3 & 38.4 & 25.0 & 4.914476e-126 & 23.88\\
+etiquette\_dpe=etiquette\_dpe\_C & 66.2 & 42.1 & 28.7 & 1.309104e-115 & 22.85\\
+etiquette\_ges=etiquette\_ges\_A & 89.9 & 12.4 & 6.2 & 1.057490e-93 & 20.53\\
+\addlinespace
+etiquette\_ges=etiquette\_ges\_C & 60.8 & 42.8 & 31.7 & 1.565536e-74 & 18.27\\
+etiquette\_dpe=etiquette\_dpe\_B & 99.4 & 5.0 & 2.3 & 7.211058e-56 & 15.75\\
+Conso\_Moy\_log=(2.52,11.9] & 58.6 & 32.5 & 25.0 & 4.889148e-40 & 13.24\\
+Conso\_totale=(81.8,2e+03] & 57.3 & 31.8 & 25.0 & 3.221480e-33 & 12.01\\
+cout\_total\_5\_usages=(679,946] & 54.7 & 30.3 & 25.0 & 3.219775e-21 & 9.46\\
+\addlinespace
+etiquette\_dpe=etiquette\_dpe\_A & 100.0 & 0.9 & 0.4 & 1.872444e-10 & 6.37\\
+Conso\_com=[2.09,2.63] & 47.9 & 66.4 & 62.4 & 2.688319e-10 & 6.32\\
+Conso\_totale=(46.7,81.8] & 49.0 & 27.2 & 25.0 & 9.494287e-05 & 3.90\\
+nombre\_appartement=(20,33] & 48.5 & 23.4 & 21.7 & 2.221801e-03 & 3.06\\
+annee\_construction=[1.61e+03,1.94e+03] & 47.9 & 26.7 & 25.1 & 5.236471e-03 & 2.79\\
+\addlinespace
+nombre\_appartement=(61,7.63e+03] & 42.8 & 23.7 & 24.9 & 2.817874e-02 & -2.19\\
+nombre\_appartement=[10,20] & 42.9 & 27.7 & 29.1 & 2.215240e-02 & -2.29\\
+Conso\_Moy\_log=(1.82,2.52] & 42.2 & 23.4 & 24.9 & 5.503364e-03 & -2.78\\
+Conso\_totale=(28.1,46.7] & 41.3 & 22.9 & 25.0 & 2.442821e-04 & -3.67\\
+Conso\_Moy\_log=[0.225,1.37] & 39.8 & 22.1 & 25.1 & 2.015852e-07 & -5.20\\
+\addlinespace
+etiquette\_dpe=etiquette\_dpe\_F & 35.0 & 6.6 & 8.5 & 1.910152e-07 & -5.21\\
+Conso\_Moy\_log=(1.37,1.82] & 39.6 & 22.0 & 25.0 & 1.062183e-07 & -5.32\\
+etiquette\_ges=etiquette\_ges\_G & 13.3 & 0.4 & 1.4 & 1.478381e-11 & -6.75\\
+Conso\_com=(2.63,2.94] & 35.5 & 12.3 & 15.6 & 1.833526e-12 & -7.05\\
+surface\_habitable\_logement=(57,73.5] & 35.5 & 19.3 & 24.6 & 8.508886e-21 & -9.35\\
+\addlinespace
+annee\_construction=(1.97e+03,1.98e+03] & 34.2 & 18.6 & 24.5 & 4.271857e-26 & -10.57\\
+etiquette\_dpe=etiquette\_dpe\_E & 32.0 & 15.8 & 22.2 & 8.254383e-33 & -11.93\\
+Conso\_totale=[4.43,28.1] & 32.5 & 18.1 & 25.0 & 2.736483e-35 & -12.40\\
+etiquette\_ges=etiquette\_ges\_F & 14.5 & 1.7 & 5.3 & 1.278663e-38 & -13.00\\
+etiquette\_dpe=etiquette\_dpe\_D & 34.5 & 26.4 & 34.5 & 5.533025e-39 & -13.06\\
+\addlinespace
+annee\_construction=(1.94e+03,1.97e+03] & 28.8 & 16.3 & 25.4 & 9.327011e-60 & -16.30\\
+etiquette\_ges=etiquette\_ges\_E & 16.3 & 5.5 & 15.3 & 2.961612e-105 & -21.79\\
+cout\_total\_5\_usages=(946,1.31e+03] & 22.2 & 12.3 & 25.0 & 2.453475e-117 & -23.03\\
+etiquette\_ges=etiquette\_ges\_D & 22.3 & 13.9 & 28.1 & 7.400975e-136 & -24.81\\
+surface\_habitable\_logement=(73.5,1.29e+04] & 19.7 & 11.0 & 25.0 & 4.483271e-145 & -25.65\\
+\addlinespace
+cout\_total\_5\_usages=(1.31e+03,1.53e+05] & 11.8 & 6.5 & 25.0 & 0.000000e+00 & -34.51\\
+emission\_ges\_5\_usages=(2.62e+03,4.78e+05] & 0.2 & 0.1 & 25.0 & 0.000000e+00 & -Inf\\
+emission\_ges\_5\_usages=(1.54e+03,2.62e+03] & 4.7 & 2.6 & 25.0 & 0.000000e+00 & -Inf\\
+conso\_5.usages\_ef=(1.28e+04,2.22e+06] & 0.2 & 0.1 & 25.0 & 0.000000e+00 & -Inf\\
+conso\_5.usages\_ef=(8.49e+03,1.28e+04] & 2.9 & 1.6 & 25.0 & 0.000000e+00 & -Inf\\
+\bottomrule
+\end{longtable}
+\endgroup{}
+\end{frame}
+
+\begin{frame}{10}
+\phantomsection\label{section-11}
+\begingroup\fontsize{8}{10}\selectfont
+
+\begin{longtable}[t]{lrrrrr}
+\toprule
+ & Cla/Mod & Mod/Cla & Global & p.value & v.test\\
+\midrule
+emission\_ges\_5\_usages=(1.54e+03,2.62e+03] & 89.2 & 74.9 & 25.0 & 0.000000e+00 & Inf\\
+conso\_5.usages\_ef=(8.49e+03,1.28e+04] & 94.1 & 79.0 & 25.0 & 0.000000e+00 & Inf\\
+cout\_total\_5\_usages=(946,1.31e+03] & 57.2 & 48.1 & 25.0 & 4.469718e-178 & 28.45\\
+etiquette\_ges=etiquette\_ges\_D & 43.8 & 41.3 & 28.1 & 1.229669e-56 & 15.86\\
+cout\_total\_5\_usages=(679,946] & 43.1 & 36.1 & 25.0 & 4.445709e-44 & 13.93\\
+\addlinespace
+Conso\_totale=[4.43,28.1] & 40.3 & 33.8 & 25.0 & 2.490892e-28 & 11.04\\
+etiquette\_dpe=etiquette\_dpe\_D & 37.9 & 43.8 & 34.5 & 5.537070e-27 & 10.76\\
+surface\_habitable\_logement=(38.8,57] & 38.9 & 33.2 & 25.4 & 2.509650e-22 & 9.72\\
+annee\_construction=(1.97e+03,1.98e+03] & 38.3 & 31.5 & 24.5 & 1.158208e-18 & 8.82\\
+Conso\_Moy\_log=[0.225,1.37] & 36.4 & 30.6 & 25.1 & 3.479068e-12 & 6.96\\
+\addlinespace
+annee\_construction=(1.94e+03,1.97e+03] & 35.7 & 30.4 & 25.4 & 3.382145e-10 & 6.28\\
+Conso\_Moy\_log=(1.37,1.82] & 35.0 & 29.4 & 25.0 & 3.143342e-08 & 5.53\\
+surface\_habitable\_logement=(57,73.5] & 34.7 & 28.6 & 24.6 & 2.441977e-07 & 5.16\\
+Conso\_com=(2.94,6.54] & 34.9 & 25.8 & 22.0 & 6.369440e-07 & 4.98\\
+Conso\_com=(2.63,2.94] & 33.8 & 17.6 & 15.6 & 1.767468e-03 & 3.13\\
+\addlinespace
+nombre\_appartement=(61,7.63e+03] & 32.5 & 27.2 & 24.9 & 3.990285e-03 & 2.88\\
+Conso\_totale=(28.1,46.7] & 31.9 & 26.8 & 25.0 & 2.293618e-02 & 2.27\\
+Conso\_Moy\_log=(1.82,2.52] & 31.8 & 26.6 & 24.9 & 3.335029e-02 & 2.13\\
+nombre\_appartement=(33,61] & 27.4 & 22.2 & 24.2 & 1.077838e-02 & -2.55\\
+surface\_habitable\_logement=(73.5,1.29e+04] & 27.0 & 22.7 & 25.0 & 2.830218e-03 & -2.99\\
+\addlinespace
+etiquette\_dpe=etiquette\_dpe\_G & 21.5 & 2.6 & 3.6 & 2.456901e-03 & -3.03\\
+etiquette\_dpe=etiquette\_dpe\_A & 0.0 & 0.0 & 0.4 & 4.912263e-05 & -4.06\\
+etiquette\_dpe=etiquette\_dpe\_E & 25.0 & 18.6 & 22.2 & 1.564109e-06 & -4.80\\
+Conso\_totale=(46.7,81.8] & 25.3 & 21.2 & 25.0 & 1.123495e-06 & -4.87\\
+etiquette\_dpe=etiquette\_dpe\_F & 20.0 & 5.7 & 8.5 & 1.344710e-08 & -5.68\\
+\addlinespace
+Conso\_com=[2.09,2.63] & 27.0 & 56.5 & 62.4 & 3.262212e-11 & -6.63\\
+annee\_construction=(1.98e+03,2.02e+03] & 23.6 & 19.8 & 25.0 & 2.980096e-11 & -6.65\\
+conso\_5.usages\_ef=(5.57e+03,8.49e+03] & 22.8 & 19.1 & 25.0 & 3.593304e-14 & -7.57\\
+Conso\_totale=(81.8,2e+03] & 21.6 & 18.2 & 25.0 & 6.545434e-19 & -8.88\\
+annee\_construction=[1.61e+03,1.94e+03] & 21.6 & 18.2 & 25.1 & 5.399981e-19 & -8.90\\
+\addlinespace
+etiquette\_dpe=etiquette\_dpe\_B & 0.6 & 0.0 & 2.3 & 3.116006e-24 & -10.16\\
+etiquette\_ges=etiquette\_ges\_A & 7.2 & 1.5 & 6.2 & 2.112876e-33 & -12.04\\
+surface\_habitable\_logement=[4.8,38.8] & 18.4 & 15.5 & 25.0 & 5.431885e-36 & -12.53\\
+Conso\_Moy\_log=(2.52,11.9] & 15.9 & 13.4 & 25.0 & 1.565127e-53 & -15.40\\
+etiquette\_ges=etiquette\_ges\_B & 8.2 & 3.3 & 12.0 & 8.638430e-60 & -16.31\\
+\addlinespace
+emission\_ges\_5\_usages=(2.62e+03,4.78e+05] & 12.2 & 10.2 & 25.0 & 1.777793e-88 & -19.94\\
+emission\_ges\_5\_usages=(764,1.54e+03] & 11.6 & 9.7 & 25.0 & 2.958985e-95 & -20.71\\
+cout\_total\_5\_usages=(1.31e+03,1.53e+05] & 10.2 & 8.6 & 25.0 & 3.322593e-111 & -22.41\\
+cout\_total\_5\_usages=[112,679] & 8.6 & 7.2 & 25.0 & 2.828504e-133 & -24.57\\
+emission\_ges\_5\_usages=[18.7,764] & 6.1 & 5.2 & 25.0 & 3.071059e-171 & -27.89\\
+\addlinespace
+conso\_5.usages\_ef=(1.28e+04,2.22e+06] & 2.1 & 1.7 & 25.0 & 0.000000e+00 & -34.26\\
+conso\_5.usages\_ef=[405,5.57e+03] & 0.1 & 0.1 & 25.0 & 0.000000e+00 & -38.34\\
+\bottomrule
+\end{longtable}
+\endgroup{}
+\end{frame}
+
+\begin{frame}{11}
+\phantomsection\label{section-12}
+\begin{table}[H]
+\centering\begingroup\fontsize{8}{10}\selectfont
+
+\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
+\begin{tabular}{lrrrrr}
+\toprule
+  & Cla/Mod & Mod/Cla & Global & p.value & v.test\\
+\midrule
+cout\_total\_5\_usages=(1.31e+03,1.53e+05] & 78.0 & 77.4 & 25.0 & 0.000000e+00 & Inf\\
+emission\_ges\_5\_usages=(2.62e+03,4.78e+05] & 87.6 & 87.0 & 25.0 & 0.000000e+00 & Inf\\
+conso\_5.usages\_ef=(1.28e+04,2.22e+06] & 97.8 & 97.1 & 25.0 & 0.000000e+00 & Inf\\
+surface\_habitable\_logement=(73.5,1.29e+04] & 53.3 & 52.9 & 25.0 & 0.000000e+00 & 30.27\\
+etiquette\_ges=etiquette\_ges\_E & 54.5 & 33.1 & 15.3 & 2.266248e-115 & 22.83\\
+\addlinespace
+etiquette\_dpe=etiquette\_dpe\_E & 43.0 & 37.8 & 22.2 & 4.357470e-71 & 17.83\\
+etiquette\_ges=etiquette\_ges\_F & 58.3 & 12.3 & 5.3 & 4.403605e-45 & 14.09\\
+annee\_construction=(1.94e+03,1.97e+03] & 35.5 & 35.8 & 25.4 & 2.241155e-30 & 11.45\\
+etiquette\_dpe=etiquette\_dpe\_F & 45.0 & 15.1 & 8.5 & 1.757121e-28 & 11.07\\
+etiquette\_ges=etiquette\_ges\_D & 34.0 & 37.9 & 28.1 & 8.763334e-26 & 10.50\\
+\addlinespace
+etiquette\_ges=etiquette\_ges\_G & 62.2 & 3.4 & 1.4 & 7.838967e-15 & 7.77\\
+annee\_construction=[1.61e+03,1.94e+03] & 30.5 & 30.4 & 25.1 & 3.572462e-09 & 5.90\\
+surface\_habitable\_logement=(57,73.5] & 29.8 & 29.1 & 24.6 & 3.442093e-07 & 5.10\\
+Conso\_com=(2.63,2.94] & 30.8 & 19.0 & 15.6 & 4.017375e-06 & 4.61\\
+etiquette\_dpe=etiquette\_dpe\_G & 37.9 & 5.4 & 3.6 & 4.904519e-06 & 4.57\\
+\addlinespace
+etiquette\_dpe=etiquette\_dpe\_D & 27.6 & 37.8 & 34.5 & 6.180471e-04 & 3.42\\
+annee\_construction=(1.97e+03,1.98e+03] & 27.5 & 26.8 & 24.5 & 1.024834e-02 & 2.57\\
+Conso\_totale=[4.43,28.1] & 27.2 & 27.0 & 25.0 & 2.629231e-02 & 2.22\\
+nombre\_appartement=(20,33] & 23.1 & 20.0 & 21.7 & 3.475434e-02 & -2.11\\
+etiquette\_dpe=etiquette\_dpe\_A & 0.0 & 0.0 & 0.4 & 2.913940e-04 & -3.62\\
+\addlinespace
+Conso\_com=(2.94,6.54] & 21.4 & 18.8 & 22.0 & 9.117785e-05 & -3.91\\
+Conso\_totale=(81.8,2e+03] & 21.1 & 20.9 & 25.0 & 2.875510e-06 & -4.68\\
+cout\_total\_5\_usages=(946,1.31e+03] & 20.6 & 20.4 & 25.0 & 1.421675e-07 & -5.26\\
+etiquette\_dpe=etiquette\_dpe\_B & 0.0 & 0.0 & 2.3 & 1.544377e-21 & -9.53\\
+surface\_habitable\_logement=(38.8,57] & 15.3 & 15.5 & 25.4 & 3.577752e-31 & -11.61\\
+\addlinespace
+etiquette\_ges=etiquette\_ges\_A & 2.9 & 0.7 & 6.2 & 7.554449e-40 & -13.21\\
+etiquette\_ges=etiquette\_ges\_B & 4.4 & 2.1 & 12.0 & 7.820529e-66 & -17.14\\
+annee\_construction=(1.98e+03,2.02e+03] & 7.1 & 7.0 & 25.0 & 7.976868e-110 & -22.27\\
+emission\_ges\_5\_usages=(1.54e+03,2.62e+03] & 6.1 & 6.0 & 25.0 & 1.982135e-124 & -23.73\\
+etiquette\_ges=etiquette\_ges\_C & 8.3 & 10.5 & 31.7 & 1.284064e-127 & -24.03\\
+\addlinespace
+emission\_ges\_5\_usages=(764,1.54e+03] & 4.9 & 4.9 & 25.0 & 2.253152e-143 & -25.49\\
+conso\_5.usages\_ef=(8.49e+03,1.28e+04] & 3.0 & 2.9 & 25.0 & 9.716966e-181 & -28.67\\
+surface\_habitable\_logement=[4.8,38.8] & 2.6 & 2.6 & 25.0 & 1.161144e-189 & -29.37\\
+cout\_total\_5\_usages=(679,946] & 2.2 & 2.2 & 25.0 & 6.110000e-198 & -30.02\\
+emission\_ges\_5\_usages=[18.7,764] & 2.1 & 2.1 & 25.0 & 0.000000e+00 & -30.26\\
+\addlinespace
+etiquette\_dpe=etiquette\_dpe\_C & 3.4 & 3.9 & 28.7 & 0.000000e+00 & -30.42\\
+conso\_5.usages\_ef=(5.57e+03,8.49e+03] & 0.0 & 0.0 & 25.0 & 0.000000e+00 & -34.91\\
+conso\_5.usages\_ef=[405,5.57e+03] & 0.0 & 0.0 & 25.0 & 0.000000e+00 & -34.91\\
+cout\_total\_5\_usages=[112,679] & 0.0 & 0.0 & 25.0 & 0.000000e+00 & -34.94\\
+\bottomrule
+\end{tabular}}
+\endgroup{}
+\end{table}
+\end{frame}
+
+\end{document}
