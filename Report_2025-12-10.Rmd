@@ -1,0 +1,18 @@
+---
+title: 'Analyse des Correspondances'
+author: 'Jeu de données df'
+output:
+  html_document: default
+---
+Ce jeu de données contient 7935 lignes et 9 colonnes, 779 lignes sont illustrativescolonne est illustrative, 4 variables qualitatives additionnelles sont illustratives.
+
+- - -
+
+```{r, echo = FALSE}
+library(FactoMineR)
+load('C:/Users/kenny/Documents/Projet-d-tude-M1/Projet-d-tude-M1/Workspace.RData')
+```
+### 1. Observation d'individus extrêmes
+La détection des individus extrêmes ne s'applique pas à l'AFC.
+
+### 2. Distribution de l'inertie
